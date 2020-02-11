@@ -51,7 +51,7 @@ object Artifact {
     val version = "1.0.0"
 }
 
-group = Artifact.artifactId
+group = Artifact.groupId
 version = Artifact.version
 
 pluginBundle {
