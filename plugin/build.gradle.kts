@@ -1,7 +1,6 @@
 plugins {
-    java
+    id("com.gradle.plugin-publish") version "0.10.1"
     `java-gradle-plugin`
-    `maven-publish`
     kotlin("jvm") version "1.3.61"
 }
 
@@ -12,15 +11,6 @@ dependencies {
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.6.0")
     testRuntimeOnly("org.junit.vintage:junit-vintage-engine:5.6.0")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.6.0")
-}
-
-gradlePlugin {
-    plugins {
-        register("dotenv") {
-            id = "co.uzzu.dotenv.gradle"
-            implementationClass = "co.uzzu.dotenv.gradle.DotEnvPlugin"
-        }
-    }
 }
 
 configure<JavaPluginConvention> {
@@ -45,15 +35,51 @@ tasks {
     }
 }
 
-group = "co.uzzu.dotenv"
-version = "1.0-SNAPSHOT"
-
-publishing {
-    repositories {
-        mavenLocal()
-    }
-
-    publications.create("pluginMaven", MavenPublication::class) {
-        artifactId = "gradle"
+gradlePlugin {
+    plugins {
+        register("dotenv") {
+            id = "co.uzzu.dotenv.gradle"
+            implementationClass = "co.uzzu.dotenv.gradle.DotEnvPlugin"
+        }
     }
 }
+
+object Artifact {
+    val groupId = "co.uzzu.dotenv"
+    val artifactid = "gradle"
+    val version = "1.0.0"
+}
+
+pluginBundle {
+    website = "https://uzzu.co"
+    vcsUrl = "https://github.com/uzzu/dotenv-gradle"
+    description = "A converting plugin from dotenv(.env.template, .env) files to Gradle project extension"
+    tags = listOf("dotenv")
+
+    (plugins) {
+        "dotenv" {
+            displayName = "Gradle dotenv plugin"
+            version = Artifact.version
+        }
+    }
+
+    mavenCoordinates {
+        groupId = Artifact.groupId
+        artifactId = Artifact.artifactid
+        version = Artifact.version
+    }
+}
+
+// region For testing temporally
+//publishing {
+//    repositories {
+//        mavenLocal()
+//    }
+//
+//    publications.create("pluginMaven", MavenPublication::class) {
+//        group = Artifact.groupId
+//        artifactId = Artifact.artifactid
+//        version = Artifact.version
+//    }
+//}
+// endregion
