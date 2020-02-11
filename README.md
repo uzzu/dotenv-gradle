@@ -1,6 +1,6 @@
 # Dotenv Gradle
 
-** Provides a ( `.env`, `.env.template` ) variables into Project extension.
+**Provides a ( `.env`, `.env.template` ) variables into Project extension.**
 
 ## How to use
 
