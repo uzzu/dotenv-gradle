@@ -1,6 +1,7 @@
 plugins {
     id("com.gradle.plugin-publish") version "0.10.1"
     `java-gradle-plugin`
+    //`maven-publish`
     kotlin("jvm") version "1.3.61"
 }
 
@@ -46,9 +47,12 @@ gradlePlugin {
 
 object Artifact {
     val groupId = "co.uzzu.dotenv"
-    val artifactid = "gradle"
+    val artifactId = "gradle"
     val version = "1.0.0"
 }
+
+group = Artifact.artifactId
+version = Artifact.version
 
 pluginBundle {
     website = "https://uzzu.co"
@@ -65,21 +69,21 @@ pluginBundle {
 
     mavenCoordinates {
         groupId = Artifact.groupId
-        artifactId = Artifact.artifactid
+        artifactId = Artifact.artifactId
         version = Artifact.version
     }
 }
 
 // region For testing temporally
 //publishing {
-//    repositories {
-//        mavenLocal()
-//    }
+//    publishing {
+//        repositories {
+//            mavenLocal()
+//        }
 //
-//    publications.create("pluginMaven", MavenPublication::class) {
-//        group = Artifact.groupId
-//        artifactId = Artifact.artifactid
-//        version = Artifact.version
+//        publications.create("pluginMaven", MavenPublication::class) {
+//            artifactId = Artifact.artifactId
+//        }
 //    }
 //}
 // endregion
