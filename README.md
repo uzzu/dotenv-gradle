@@ -12,6 +12,7 @@ Apply this plugin to root project.
 
 <details>
 <summary>Kotlin DSL</summary>
+
 ```Kotlin
 buildscript {
     repositories {
@@ -24,9 +25,11 @@ buildscript {
 
 apply(plugin = "co.uzzu.dotenv.gradle")
 ```
+
 </details>
 <details open>
 <summary>Groovy DSL</summary>
+
 ```Groovy
 buildscript {
     repositories {
@@ -39,6 +42,7 @@ buildscript {
 
 apply plugin: "co.uzzu.dotenv.gradle"
 ```
+
 </details>
 
 
@@ -46,27 +50,31 @@ apply plugin: "co.uzzu.dotenv.gradle"
 
 <details>
 <summary>Kotlin DSL</summary>
+
 ```Kotlin
 plugins {
     id("co.uzzu.dotenv.gradle") version "1.0.0"
 }
 
 ```
+
 </details>
 <details open>
 <summary>Groovy DSL</summary>
+
 ```Groovy
 plugins {
     id "co.uzzu.dotenv.gradle" version "1.0.0"
 }
 ```
+
 </details>
 
 ### Create `.env` in the root directory of your gradle project.
 
 For example:
 
-```
+```dosini
 FOO=foo
 BAR="bar"
 BAZ='baz'
