@@ -1,10 +1,10 @@
 package co.uzzu.dotenv
 
 object DotEnvParser {
-    val newLine = "\n"
-    val newLinesRegex = Regex("""\\n""", option = RegexOption.MULTILINE)
-    val keyValRegex = Regex("""^\s*([\w.-]+)\s*=\s*(.*)?\s*$""")
-    val newLinesMatches = Regex("""\n|\r|\r\n""")
+    private const val newLine = "\n"
+    private val newLinesRegex = Regex("""\\n""", option = RegexOption.MULTILINE)
+    private val keyValRegex = Regex("""^\s*([\w.-]+)\s*=\s*(.*)?\s*$""")
+    private val newLinesMatches = Regex("""\n|\r|\r\n""")
 
     fun parse(text: String): Map<String, String> =
         text

@@ -6,19 +6,23 @@ import org.gradle.api.Project
 import org.gradle.api.plugins.ExtensionAware
 import java.nio.charset.Charset
 
+@Suppress("unused")
 class DotEnvPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         val envTemplate = target.rootProject.envTemplate()
         val envSource = target.rootProject.envSource()
-        val propertyNames = envTemplate.keys.union(envSource.keys)
-        val envMerged = propertyNames.map { it to envSource[it] }.toMap()
+        val envMerged = envTemplate.keys
+            .union(envSource.keys)
+            .map { it to envSource[it] }
+            .toMap()
 
         target.applyEnv(envMerged)
         target.subprojects { it.applyEnv(envMerged) }
     }
 
     private fun Project.applyEnv(envProperties: Map<String, String?>) {
-        val env = extensions.create("env", DotEnvRoot::class.java, envProperties) as ExtensionAware
+        val env =
+            extensions.create("env", DotEnvRoot::class.java, envProperties) as ExtensionAware
         envProperties.forEach { (name, value) ->
             env.extensions.create(name, DotEnvProperty::class.java, name, value)
         }
