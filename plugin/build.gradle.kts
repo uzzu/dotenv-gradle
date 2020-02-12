@@ -48,15 +48,15 @@ gradlePlugin {
 object Artifact {
     val groupId = "co.uzzu.dotenv"
     val artifactId = "gradle"
-    val version = "1.0.0"
+    val version = "1.0.1"
 }
 
 group = Artifact.groupId
 version = Artifact.version
 
 pluginBundle {
-    website = "https://uzzu.co"
-    vcsUrl = "https://github.com/uzzu/dotenv-gradle"
+    website = "https://github.com/uzzu/dotenv-gradle"
+    vcsUrl = "https://github.com/uzzu/dotenv-gradle.git"
     description = "A converting plugin from dotenv(.env.template, .env) files to Gradle project extension"
     tags = listOf("dotenv")
 

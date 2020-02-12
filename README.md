@@ -19,7 +19,7 @@ buildscript {
         gradlePluginPortal()
     }
     dependencies {
-        classpath("co.uzzu.dotenv:gradle:1.0.0")
+        classpath("co.uzzu.dotenv:gradle:1.0.1")
     }
 }
 
@@ -36,7 +36,7 @@ buildscript {
         gradlePluginPortal()
     }
     dependencies {
-        classpath "co.uzzu.dotenv:gradle:1.0.0"
+        classpath "co.uzzu.dotenv:gradle:1.0.1"
     }
 }
 
