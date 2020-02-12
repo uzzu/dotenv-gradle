@@ -48,7 +48,7 @@ gradlePlugin {
 object Artifact {
     val groupId = "co.uzzu.dotenv"
     val artifactId = "gradle"
-    val version = "1.0.1"
+    val version = "1.0.2"
 }
 
 group = Artifact.groupId
