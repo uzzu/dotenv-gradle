@@ -1,9 +1,9 @@
 pluginManagement {
     repositories {
-        mavenCentral()
-        jcenter()
+        gradlePluginPortal()
         mavenLocal()
     }
 }
 
 rootProject.name = "basic"
+include("sub")

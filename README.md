@@ -11,6 +11,8 @@
 
 Apply this plugin to root project. [See the Gradle Plugin Portal.](https://plugins.gradle.org/plugin/co.uzzu.dotenv.gradle)
 
+Don't need to apply this plugin to subprojects. Extensions are automatically added.
+
 ### Create `.env` in the root directory of your gradle project
 
 

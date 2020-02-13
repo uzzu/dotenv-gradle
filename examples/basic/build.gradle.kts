@@ -1,6 +1,6 @@
 plugins {
     base
-    id("co.uzzu.dotenv.gradle") version "1.0.1"
+    id("co.uzzu.dotenv.gradle") version "1.0.2"
 }
 
 println(env.FOO.orElse("default_foo"))
@@ -11,4 +11,3 @@ try {
     println("example print: ${e.message}")
 }
 println(env.QUX.value)
-
