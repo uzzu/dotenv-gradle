@@ -1,74 +1,14 @@
 # Dotenv Gradle
 
+[![Gradle Plugin Portal](https://img.shields.io/maven-metadata/v/https/plugins.gradle.org/m2/co/uzzu/dotenv/gradle/co.uzzu.dotenv.gradle.gradle.plugin/maven-metadata.xml.svg?colorB=007ec6&label=gradlePluginPortal)](https://plugins.gradle.org/plugin/co.uzzu.dotenv.gradle)
+
 **Provides a ( `.env`, `.env.template` ) variables into Project extension.**
 
 ## How to use
 
 ### Setup
 
-Apply this plugin to root project.
-
-#### Using buildscript
-
-<details>
-<summary>Kotlin DSL</summary>
-
-```Kotlin
-buildscript {
-    repositories {
-        gradlePluginPortal()
-    }
-    dependencies {
-        classpath("co.uzzu.dotenv:gradle:1.0.1")
-    }
-}
-
-apply(plugin = "co.uzzu.dotenv.gradle")
-```
-
-</details>
-<details open>
-<summary>Groovy DSL</summary>
-
-```Groovy
-buildscript {
-    repositories {
-        gradlePluginPortal()
-    }
-    dependencies {
-        classpath "co.uzzu.dotenv:gradle:1.0.1"
-    }
-}
-
-apply plugin: "co.uzzu.dotenv.gradle"
-```
-
-</details>
-
-
-#### Using new plugin API
-
-<details>
-<summary>Kotlin DSL</summary>
-
-```Kotlin
-plugins {
-    id("co.uzzu.dotenv.gradle") version "1.0.0"
-}
-
-```
-
-</details>
-<details open>
-<summary>Groovy DSL</summary>
-
-```Groovy
-plugins {
-    id "co.uzzu.dotenv.gradle" version "1.0.0"
-}
-```
-
-</details>
+Apply this plugin to root project. [See the Gradle Plugin Portal](https://plugins.gradle.org/plugin/co.uzzu.dotenv.gradle)
 
 ### Create `.env` in the root directory of your gradle project.
 
