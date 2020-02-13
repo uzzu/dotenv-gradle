@@ -69,5 +69,4 @@ open class DotEnvProperty(private val name: String, private val dotenvValue: Str
     fun orNull(): String? =
         System.getenv()[name]
             ?: dotenvValue
-
 }

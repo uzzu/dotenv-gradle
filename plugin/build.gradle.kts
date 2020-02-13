@@ -1,8 +1,9 @@
 plugins {
     id("com.gradle.plugin-publish") version "0.10.1"
     `java-gradle-plugin`
-    //`maven-publish`
-    kotlin("jvm") version "1.3.61"
+    `maven-publish`
+    kotlin("jvm")
+    id("org.jlleitschuh.gradle.ktlint")
 }
 
 dependencies {
@@ -36,14 +37,16 @@ tasks {
     }
 }
 
-gradlePlugin {
-    plugins {
-        register("dotenv") {
-            id = "co.uzzu.dotenv.gradle"
-            implementationClass = "co.uzzu.dotenv.gradle.DotEnvPlugin"
-        }
+ktlint {
+    verbose.set(true)
+    outputToConsole.set(true)
+    reporters {
+        reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.CHECKSTYLE)
     }
+    ignoreFailures.set(true)
 }
+
+// region publishing
 
 object Artifact {
     val groupId = "co.uzzu.dotenv"
@@ -53,6 +56,15 @@ object Artifact {
 
 group = Artifact.groupId
 version = Artifact.version
+
+gradlePlugin {
+    plugins {
+        register("dotenv") {
+            id = "co.uzzu.dotenv.gradle"
+            implementationClass = "co.uzzu.dotenv.gradle.DotEnvPlugin"
+        }
+    }
+}
 
 pluginBundle {
     website = "https://github.com/uzzu/dotenv-gradle"
@@ -74,16 +86,16 @@ pluginBundle {
     }
 }
 
-// region For testing temporally
-//publishing {
-//    publishing {
-//        repositories {
-//            mavenLocal()
-//        }
-//
-//        publications.create("pluginMaven", MavenPublication::class) {
-//            artifactId = Artifact.artifactId
-//        }
-//    }
-//}
+publishing {
+    publishing {
+        repositories {
+            mavenLocal()
+        }
+
+        publications.create("pluginMaven", MavenPublication::class) {
+            artifactId = Artifact.artifactId
+        }
+    }
+}
+
 // endregion
