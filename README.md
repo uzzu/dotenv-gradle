@@ -8,9 +8,10 @@
 
 ### Setup
 
-Apply this plugin to root project. [See the Gradle Plugin Portal](https://plugins.gradle.org/plugin/co.uzzu.dotenv.gradle)
+Apply this plugin to root project. [See the Gradle Plugin Portal.](https://plugins.gradle.org/plugin/co.uzzu.dotenv.gradle)
 
-### Create `.env` in the root directory of your gradle project.
+### Create `.env` in the root directory of your gradle project
+
 
 For example:
 
@@ -31,6 +32,8 @@ println(env.FOO.value)                  // => foo
 println(env.BAR.orNull())               // => bar
 println(env.BAZ.orElse("default baz"))  // => baz
 ```
+
+**Don't commit `.env` file**
 
 ### [Optional] Create a `.env.template` file for script completion
 
