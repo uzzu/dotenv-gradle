@@ -3,7 +3,6 @@ plugins {
     `java-gradle-plugin`
     `maven-publish`
     kotlin("jvm")
-    id("org.jlleitschuh.gradle.ktlint")
 }
 
 dependencies {
@@ -35,15 +34,6 @@ tasks {
     test {
         useJUnitPlatform()
     }
-}
-
-ktlint {
-    verbose.set(true)
-    outputToConsole.set(true)
-    reporters {
-        reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.CHECKSTYLE)
-    }
-    ignoreFailures.set(true)
 }
 
 // region publishing
