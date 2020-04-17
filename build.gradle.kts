@@ -11,6 +11,15 @@ allprojects {
     }
 }
 
+ktlint {
+    verbose.set(true)
+    outputToConsole.set(true)
+    reporters {
+        reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.CHECKSTYLE)
+    }
+    ignoreFailures.set(true)
+}
+
 subprojects {
     apply(plugin = "org.jlleitschuh.gradle.ktlint")
     ktlint {

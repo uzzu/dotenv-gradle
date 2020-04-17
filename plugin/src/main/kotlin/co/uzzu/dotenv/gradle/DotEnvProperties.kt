@@ -1,11 +1,16 @@
 package co.uzzu.dotenv.gradle
 
-open class DotEnvRoot(private val map: Map<String, String>) {
+import co.uzzu.dotenv.EnvProvider
+
+open class DotEnvRoot(
+    private val envProvider: EnvProvider,
+    private val map: Map<String, String>
+) {
     /**
      * @return Indicates an environment variable with specified name is present
      */
     fun isPresent(name: String): Boolean =
-        System.getenv()[name]?.let { true }
+        envProvider.getenv()[name]?.let { true }
             ?: map[name]?.let { true }
             ?: false
 
@@ -14,7 +19,7 @@ open class DotEnvRoot(private val map: Map<String, String>) {
      * @throws IllegalStateException if it was not set
      */
     fun fetch(name: String) =
-        System.getenv()[name]
+        envProvider.getenv()[name]
             ?: map[name]
             ?: throw IllegalStateException("""Environment variable $name was not set.""")
 
@@ -23,7 +28,7 @@ open class DotEnvRoot(private val map: Map<String, String>) {
      * @throws IllegalStateException if it was not set
      */
     fun fetch(name: String, defaultValue: String) =
-        System.getenv()[name]
+        envProvider.getenv()[name]
             ?: map[name]
             ?: defaultValue
 
@@ -31,17 +36,21 @@ open class DotEnvRoot(private val map: Map<String, String>) {
      * @return An environment variable. If it was not set, returns specified default value
      */
     fun fetchOrNull(name: String): String? =
-        System.getenv()[name]
+        envProvider.getenv()[name]
             ?: map[name]
 }
 
-open class DotEnvProperty(private val name: String, private val dotenvValue: String?) {
+open class DotEnvProperty(
+    private val envProvider: EnvProvider,
+    private val name: String,
+    private val dotenvValue: String?
+) {
 
     /**
      * @return Indicates an environment variable is present
      */
     val isPresent: Boolean
-        get() = System.getenv()[name]?.let { true }
+        get() = envProvider.getenv()[name]?.let { true }
             ?: dotenvValue?.let { true }
             ?: false
 
@@ -51,7 +60,7 @@ open class DotEnvProperty(private val name: String, private val dotenvValue: Str
      */
     val value: String
         get() =
-            System.getenv()[name]
+            envProvider.getenv()[name]
                 ?: dotenvValue
                 ?: throw IllegalStateException("""Environment variable $name was not set.""")
 
@@ -59,7 +68,7 @@ open class DotEnvProperty(private val name: String, private val dotenvValue: Str
      * @return An environment variable. If it was not set, returns specified default value
      */
     fun orElse(defaultValue: String): String =
-        System.getenv()[name]
+        envProvider.getenv()[name]
             ?: dotenvValue
             ?: defaultValue
 
@@ -67,6 +76,6 @@ open class DotEnvProperty(private val name: String, private val dotenvValue: Str
      * @return An environment variable. If it was not set, returns null.
      */
     fun orNull(): String? =
-        System.getenv()[name]
+        envProvider.getenv()[name]
             ?: dotenvValue
 }
