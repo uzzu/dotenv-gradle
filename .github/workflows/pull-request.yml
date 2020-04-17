@@ -1,0 +1,38 @@
+name: pull-request-build
+
+on: [pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup JDK
+        uses: actions/setup-java@v1.3.0
+        with:
+          java-version: 1.8
+          architecture: x64
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1.13.1
+      - name: Bundle install
+        run: |
+          bundle install
+      - name: Gradle clean
+        run: |
+          ./gradlew clean
+          cd examples/basic
+          ./gradlew clean
+      - name: Gradle build
+        run: |
+          ./gradlew build
+      - name: Run Danger
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          bundle exec danger --verbose
+      - name: Upload build report
+        uses: actions/upload-artifact@v1.0.0
+        with:
+          name: build_reports
+          path: plugin/build/reports
