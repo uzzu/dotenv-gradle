@@ -14,7 +14,7 @@ jobs:
           java-version: 1.8
           architecture: x64
       - name: Setup Ruby
-        uses: ruby/setup-ruby@v1.13.1
+        uses: ruby/setup-ruby@v1
       - name: Bundle install
         run: |
           bundle install
