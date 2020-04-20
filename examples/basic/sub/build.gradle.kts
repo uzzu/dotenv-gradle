@@ -6,3 +6,6 @@ try {
     println("[$name] example print: ${e.message}")
 }
 println("""[$name] ${env.QUX.value}""")
+
+// All environment variables which are merged with variables specified in .env files.
+env.allVariables
