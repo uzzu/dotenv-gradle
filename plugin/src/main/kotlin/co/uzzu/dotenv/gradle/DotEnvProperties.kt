@@ -2,16 +2,33 @@ package co.uzzu.dotenv.gradle
 
 import co.uzzu.dotenv.EnvProvider
 
+/**
+ * This object will be added as extension which named "env" to the Project.
+ */
 open class DotEnvRoot(
     private val envProvider: EnvProvider,
-    private val map: Map<String, String>
+    private val dotenvMap: Map<String, String?>
 ) {
+    /**
+     * @return All environment variables which are merged with variables specified in .env files.
+     */
+    val allVariables: Map<String, String>
+        get() {
+            val results = envProvider.getenv().toMutableMap()
+            dotenvMap.forEach { (key, value) ->
+                if (value != null && results[key] == null) {
+                    results[key] = value
+                }
+            }
+            return results.toMap()
+        }
+
     /**
      * @return Indicates an environment variable with specified name is present
      */
     fun isPresent(name: String): Boolean =
         envProvider.getenv()[name]?.let { true }
-            ?: map[name]?.let { true }
+            ?: dotenvMap[name]?.let { true }
             ?: false
 
     /**
@@ -20,7 +37,7 @@ open class DotEnvRoot(
      */
     fun fetch(name: String) =
         envProvider.getenv()[name]
-            ?: map[name]
+            ?: dotenvMap[name]
             ?: throw IllegalStateException("""Environment variable $name was not set.""")
 
     /**
@@ -29,7 +46,7 @@ open class DotEnvRoot(
      */
     fun fetch(name: String, defaultValue: String) =
         envProvider.getenv()[name]
-            ?: map[name]
+            ?: dotenvMap[name]
             ?: defaultValue
 
     /**
@@ -37,9 +54,13 @@ open class DotEnvRoot(
      */
     fun fetchOrNull(name: String): String? =
         envProvider.getenv()[name]
-            ?: map[name]
+            ?: dotenvMap[name]
 }
 
+/**
+ * This object has environment variables defined on .env file.
+ * This object will be added as extension which named environment variable name, to the DotEnv object.
+ */
 open class DotEnvProperty(
     private val envProvider: EnvProvider,
     private val name: String,

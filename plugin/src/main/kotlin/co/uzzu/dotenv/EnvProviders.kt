@@ -20,5 +20,5 @@ interface EnvProvider {
  */
 class SystemEnvProvider : EnvProvider {
     override fun getenv(name: String): String? = System.getenv(name)
-    override fun getenv(): Map<String, String> = System.getenv()
+    override fun getenv(): Map<String, String> = System.getenv().filterValues { it != null }
 }
