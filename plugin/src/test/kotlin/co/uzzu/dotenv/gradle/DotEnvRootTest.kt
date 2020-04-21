@@ -7,9 +7,9 @@ import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertAll
 
 class DotEnvRootTest {
-
     @Test
     fun isPresentByEnv() {
         val envProvider = InMemoryEnvProvider(mapOf("FOO" to "env"))
@@ -92,5 +92,33 @@ class DotEnvRootTest {
         val envProvider = InMemoryEnvProvider(mapOf())
         val root = DotEnvRoot(envProvider, mapOf())
         assertNull(root.fetchOrNull("FOO"))
+    }
+
+    @Test
+    fun allVariables() {
+        val envProvider = InMemoryEnvProvider(
+            mapOf(
+                "FOO" to "env",
+                "BAR" to "env"
+            )
+        )
+        val root = DotEnvRoot(
+            envProvider,
+            mapOf(
+                "BAR" to "dotenv",
+                "BAZ" to "dotenv",
+                "QUX" to "dotenv",
+                "QUUX" to null
+            )
+        )
+        val allVariables = root.allVariables
+        assertAll(
+            { assertEquals("env", allVariables["FOO"]) },
+            { assertEquals("env", allVariables["BAR"]) },
+            { assertEquals("dotenv", allVariables["BAZ"]) },
+            { assertEquals("dotenv", allVariables["QUX"]) },
+            { assertEquals(null, allVariables["QUUX"]) },
+            { assertEquals(null, allVariables["CORGE"]) }
+        )
     }
 }
