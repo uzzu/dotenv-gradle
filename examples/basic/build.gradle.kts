@@ -1,6 +1,6 @@
 plugins {
     base
-    id("co.uzzu.dotenv.gradle") version "1.0.2"
+    id("co.uzzu.dotenv.gradle") version "1.1.0"
 }
 
 println(env.FOO.orElse("default_foo"))
