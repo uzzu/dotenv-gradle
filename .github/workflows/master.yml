@@ -17,11 +17,16 @@ jobs:
     - name: Gradle clean
       run: |
         ./gradlew clean
-        cd examples/basic
-        ./gradlew clean
     - name: Gradle build
       run: |
         ./gradlew build
+    - name: Gradle publish to mavenLocal
+      run: |
+        ./gradlew publishToMavenLocal
+    - name: Run basic example
+      run: |
+        cd examples/basic
+        ./gradlew clean --refresh-dependencies
     - name: Upload build report
       uses: actions/upload-artifact@v1.0.0
       with:
