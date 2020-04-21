@@ -15,7 +15,6 @@ Don't need to apply this plugin to subprojects.
 
 ### Create `.env` in the root directory of your gradle project
 
-
 For example:
 
 ```dosini
@@ -42,7 +41,15 @@ println(env.BAZ.orElse("default baz"))  // => baz
 
 If a `.env.template` file exists, this plugin refer it to create a environemnt variable properties in the `env` extension.
 
-[See more examples](/examples/basic)
+### Others
+- All APIs of `env` extension consider `.env` file.
+  - If the same variable name value is defined in both the `.env` file and the system environment variable, the system environment variable takes precedence.
+- `(Boolean) env.isPresent(name: String)` : Indicates an environment variable with specified name is present.
+- `(String) env.fetch(name: String)` : Returns an environment variable.
+- `(String) env.fetch(name: String, defaultValue: String)` : Returns an environment variable, or specified default value if environment variable was not set.
+- `(String?) env.fetchOrNull(name: String)` : Returns an environment variable, or null if environment variable was not set.
+- `(Map<String, String) env.allVariables` : Returns all environment variables.
+- [See more examples](/examples/basic)
 
 ## License
 
