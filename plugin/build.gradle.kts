@@ -88,4 +88,14 @@ publishing {
     }
 }
 
+if (env.PUBLISH_PRODUCTION.isPresent) {
+    val setPublishingSecrets by tasks.creating {
+        doLast {
+            System.setProperty("gradle.publish.key", env.GRADLE_PUBLISH_KEY.value)
+            System.setProperty("gradle.publish.secret", env.GRADLE_PUBLISH_SECRET.value)
+        }
+    }
+    tasks.getByName("publishPlugins").dependsOn(setPublishingSecrets)
+}
+
 // endregion
