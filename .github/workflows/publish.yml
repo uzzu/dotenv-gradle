@@ -1,0 +1,34 @@
+name: Publish
+on: 
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Setup JDK
+      uses: actions/setup-java@v1.4.2
+      with:
+        java-version: 1.8
+        architecture: x64
+    - name: Gradle clean
+      run: |
+        ./gradlew clean
+    - name: Gradle build
+      run: |
+        ./gradlew build
+    - name: Gradle publish to mavenLocal
+      run: |
+        ./gradlew publishToMavenLocal
+    - name: Run basic example
+      run: |
+        cd examples/basic
+        ./gradlew clean --refresh-dependencies
+        pushd
+    - name: publish
+      run: |
+        PUBLISH_PRODUCTION=1 ./gradlew publishPlugins
+      env: 
+        GRADLE_PUBLISH_KEY: ${{ secrets.GRADLE_PUBLISH_KEY }}
+        GRADLE_PUBLISH_SECRET: ${{ secrets.GRADLE_PUBLISH_SECRET }}
