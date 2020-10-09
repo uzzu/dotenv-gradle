@@ -12,6 +12,10 @@ jobs:
       with:
         java-version: 1.8
         architecture: x64
+    - name: Set env
+      run: |
+        echo 'GRADLE_PUBLISH_KEY=${{ secrets.GRADLE_PUBLISH_KEY }}' >> $GITHUB_ENV
+        echo 'GRADLE_PUBLISH_SECRET=${{ secrets.GRADLE_PUBLISH_SECRET }}' >> $GITHUB_ENV
     - name: Gradle clean
       run: |
         ./gradlew clean
@@ -29,6 +33,3 @@ jobs:
     - name: publish
       run: |
         PUBLISH_PRODUCTION=1 ./gradlew publishPlugins
-      env: 
-        GRADLE_PUBLISH_KEY: ${{ secrets.GRADLE_PUBLISH_KEY }}
-        GRADLE_PUBLISH_SECRET: ${{ secrets.GRADLE_PUBLISH_SECRET }}
