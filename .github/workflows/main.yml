@@ -7,28 +7,35 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-    - name: Setup JDK
-      uses: actions/setup-java@v2
-      with:
-        distribution: 'adopt'
-        java-version: 11
-    - name: Gradle clean
-      run: |
-        ./gradlew clean
-    - name: Gradle build
-      run: |
-        ./gradlew build
-    - name: Gradle publish to mavenLocal
-      run: |
-        ./gradlew publishToMavenLocal
-    - name: Run basic example
-      run: |
-        cd examples/basic
-        ./gradlew clean --refresh-dependencies
-    - name: Upload build report
-      uses: actions/upload-artifact@v1.0.0
-      with:
-        name: build_reports
-        path: plugin/build/reports
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup JDK
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: 11
+      - name: Gradle clean
+        run: |
+          ./gradlew clean
+      - name: Gradle build
+        run: |
+          ./gradlew build
+      - name: Gradle publish to mavenLocal
+        run: |
+          ./gradlew publishToMavenLocal
+      - name: Run basic example
+        run: |
+          cd examples/basic
+          ./gradlew clean --refresh-dependencies
+          pushd
+      - name: Run change file example
+        run: |
+          cd examples/change_file
+          ./gradlew clean --refresh-dependencies
+          ENV_FILE=.env.staging ./gradlew clean
+          pushd
+      - name: Upload build report
+        uses: actions/upload-artifact@v1.0.0
+        with:
+          name: build_reports
+          path: plugin/build/reports

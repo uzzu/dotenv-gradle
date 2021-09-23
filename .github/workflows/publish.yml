@@ -1,35 +1,41 @@
 name: Publish
-on: 
+on:
   workflow_dispatch:
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-    - name: Setup JDK
-      uses: actions/setup-java@v2
-      with:
-        distribution: 'adopt'
-        java-version: 11
-    - name: Set env
-      run: |
-        echo 'GRADLE_PUBLISH_KEY=${{ secrets.GRADLE_PUBLISH_KEY }}' >> $GITHUB_ENV
-        echo 'GRADLE_PUBLISH_SECRET=${{ secrets.GRADLE_PUBLISH_SECRET }}' >> $GITHUB_ENV
-    - name: Gradle clean
-      run: |
-        ./gradlew clean
-    - name: Gradle build
-      run: |
-        ./gradlew build
-    - name: Gradle publish to mavenLocal
-      run: |
-        ./gradlew publishToMavenLocal
-    - name: Run basic example
-      run: |
-        cd examples/basic
-        ./gradlew clean --refresh-dependencies
-        pushd
-    - name: publish
-      run: |
-        PUBLISH_PRODUCTION=1 ./gradlew publishPlugins
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup JDK
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: 11
+      - name: Set env
+        run: |
+          echo 'GRADLE_PUBLISH_KEY=${{ secrets.GRADLE_PUBLISH_KEY }}' >> $GITHUB_ENV
+          echo 'GRADLE_PUBLISH_SECRET=${{ secrets.GRADLE_PUBLISH_SECRET }}' >> $GITHUB_ENV
+      - name: Gradle clean
+        run: |
+          ./gradlew clean
+      - name: Gradle build
+        run: |
+          ./gradlew build
+      - name: Gradle publish to mavenLocal
+        run: |
+          ./gradlew publishToMavenLocal
+      - name: Run basic example
+        run: |
+          cd examples/basic
+          ./gradlew clean --refresh-dependencies
+          pushd
+      - name: Run change file example
+        run: |
+          cd examples/change_file
+          ./gradlew clean --refresh-dependencies
+          ENV_FILE=.env.staging ./gradlew clean
+          pushd
+      - name: publish
+        run: |
+          PUBLISH_PRODUCTION=1 ./gradlew publishPlugins
