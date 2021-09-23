@@ -9,8 +9,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 - Update Gradle to 6.9
 - Update Kotlin to 1.4.20
-- Add changing file feature
-    - If environment variable `ENV_FILE` is set, The plugin read a file specified `ENV_FILE` instead of `.env` file.
+- Add changing `.env` file feature
+  - If environment variable `ENV_FILE` is set, The plugin read a file specified `ENV_FILE` instead of `.env` file.
 
 ## Changed
 
