@@ -9,7 +9,9 @@
 
 ### Setup
 
-Apply this plugin to root project. [See the Gradle Plugin Portal.](https://plugins.gradle.org/plugin/co.uzzu.dotenv.gradle)
+Apply this plugin to root project.
+This plugin is not registered to Maven Central.
+[Read the Gradle Plugin Portal to setup plugin.](https://plugins.gradle.org/plugin/co.uzzu.dotenv.gradle)
 
 Don't need to apply this plugin to subprojects.
 
