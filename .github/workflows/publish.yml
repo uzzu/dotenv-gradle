@@ -29,13 +29,11 @@ jobs:
         run: |
           cd examples/basic
           ./gradlew clean --refresh-dependencies
-          pushd
       - name: Run change file example
         run: |
           cd examples/change_file
           ./gradlew clean --refresh-dependencies
           ENV_FILE=.env.staging ./gradlew clean
-          pushd
       - name: publish
         run: |
           PUBLISH_PRODUCTION=1 ./gradlew publishPlugins
