@@ -6,6 +6,7 @@ import co.uzzu.dotenv.SystemEnvProvider
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.ExtensionAware
+import java.io.IOException
 import java.nio.charset.Charset
 
 @Suppress("unused")
@@ -34,8 +35,24 @@ class DotEnvPlugin : Plugin<Project> {
     private fun Project.dotenvTemplate(filename: String = ".env.template"): Map<String, String> =
         readText(filename).let(DotEnvParser::parse)
 
-    private fun Project.dotenvSource(filename: String = ".env"): Map<String, String> =
-        readText(filename).let(DotEnvParser::parse)
+    private fun Project.dotenvSource(filename: String = ".env"): Map<String, String> {
+        val envFilename = System.getenv(Companion.KEY_ENV_FILE)
+            ?.takeIf {
+                val envFile = file(it)
+                if (!envFile.exists() || !envFile.canRead()) {
+                    throw IOException(
+                        buildString {
+                            append("Could not read the dotenv file specified in the environment variables.")
+                            append(" $KEY_ENV_FILE: $it,")
+                            append(" path: ${envFile.absolutePath}")
+                        }
+                    )
+                }
+                true
+            }
+            ?: filename
+        return readText(envFilename).let(DotEnvParser::parse)
+    }
 
     private fun Project.readText(filename: String): String {
         val file = file(filename)
@@ -44,5 +61,9 @@ class DotEnvPlugin : Plugin<Project> {
         } else {
             ""
         }
+    }
+
+    companion object {
+        private const val KEY_ENV_FILE = "ENV_FILE"
     }
 }
