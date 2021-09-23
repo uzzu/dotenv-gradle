@@ -42,7 +42,7 @@ internal class TestingRootProject(
                     Parent file is not a directory.
                     Writing file path: ${file.absolutePath}
                     Writing file's parent directory path: ${parentDir.absolutePath}
-                """.trimIndent()
+                    """.trimIndent()
                 )
             }
         } else {
