@@ -5,17 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased]
+## [1.2.0] - 2021-09-24
 
-- Update Gradle to 6.9
-- Update Kotlin to 1.4.20
-- Add changing `.env` file feature
-  - If environment variable `ENV_FILE` is set, The plugin read a file specified `ENV_FILE` instead of `.env` file.
+## Added
+
+- Changing `.env` file [#14](https://github.com/uzzu/dotenv-gradle/issues/14)
+    - If environment variable `ENV_FILE` is set, The plugin read a file specified `ENV_FILE` instead of `.env` file.
 
 ## Changed
 
-- Update Gradle to 6.6
-- Update Kotlin to 1.3.72
+- Update Gradle to 6.9
+- Update Kotlin to 1.4.20
 
 ## [1.1.0] - 2020-04-21
 
