@@ -43,6 +43,12 @@ println(env.BAZ.orElse("default baz"))  // => baz
 
 If a `.env.template` file exists, this plugin refer it to create a environemnt variable properties in the `env` extension.
 
+### [Optional] Change a file to read instead of `.env` file.
+
+If environment variable `ENV_FILE` is set, The plugin read a file specified `ENV_FILE` instead of `.env` file.
+
+[See example](/examples/change_file)
+
 ### Others
 - All APIs of `env` extension consider `.env` file.
   - If the same variable name value is defined in both the `.env` file and the system environment variable, the system environment variable takes precedence.

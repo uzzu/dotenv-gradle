@@ -1,6 +1,6 @@
 name: pull-request-build
 
-on: [pull_request]
+on: [ pull_request ]
 
 jobs:
   build:
@@ -36,6 +36,11 @@ jobs:
         run: |
           cd examples/basic
           ./gradlew clean --refresh-dependencies
+      - name: Run change file example
+        run: |
+          cd examples/change_file
+          ./gradlew clean --refresh-dependencies
+          ENV_FILE=.env.staging ./gradlew clean
       - name: Upload build report
         uses: actions/upload-artifact@v1.0.0
         with:
