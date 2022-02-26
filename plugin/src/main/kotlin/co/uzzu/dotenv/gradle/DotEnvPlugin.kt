@@ -12,6 +12,8 @@ import java.nio.charset.Charset
 @Suppress("unused")
 class DotEnvPlugin : Plugin<Project> {
     override fun apply(target: Project) {
+        check(target == target.rootProject) { "This plugin must be applied to root project." }
+
         val envProvider = SystemEnvProvider()
         val dotenvTemplate = target.rootProject.dotenvTemplate()
         val dotenvSource = target.rootProject.dotenvSource()

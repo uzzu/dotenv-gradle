@@ -2,7 +2,10 @@ package co.uzzu.dotenv.gradle
 
 import assertk.assertThat
 import assertk.assertions.contains
+import assertk.assertions.isNotNull
+import assertk.assertions.messageContains
 import org.gradle.testkit.runner.GradleRunner
+import org.gradle.testkit.runner.UnexpectedBuildFailure
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 import java.io.File
@@ -99,5 +102,46 @@ class BasicUsageTest {
 
         assertThat(result.output).contains("Result: 100")
         assertThat(result.output).contains("[Sub] Result: 100")
+    }
+
+    @Test
+    fun throwIfAppliedSubProject() {
+        RootProject(projectDir) {
+            settingsGradle(
+                """
+                include("sub")
+                """.trimIndent()
+            )
+            buildGradle(
+                """
+                plugins {
+                    base
+                }
+                """.trimIndent()
+            )
+            directory("sub")
+            file(
+                "sub/build.gradle",
+                """
+                plugins {
+                    id("co.uzzu.dotenv.gradle")
+                }
+                """.trimIndent()
+            )
+        }
+
+        val runner = GradleRunner.create()
+            .withPluginClasspath()
+            .withProjectDir(projectDir)
+
+        var error: UnexpectedBuildFailure? = null
+        try {
+            runner.build()
+        } catch (e: UnexpectedBuildFailure) {
+            error = e
+        }
+        assertThat(error)
+            .isNotNull()
+            .messageContains("This plugin must be applied to root project.")
     }
 }
