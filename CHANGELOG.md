@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased] - xxxx-xx-xx
+
+### Added
+
+### Changed
+- Update Gradle to 7.1.1 [#16](https://github.com/uzzu/dotenv-gradle/issues/16)
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
 ## [1.2.0] - 2021-09-24
 
 ## Added
