@@ -140,13 +140,13 @@ class ChangeDotEnvFileTest {
             file(
                 ".env",
                 """
-                    FOO=100
+                FOO=100
                 """.trimIndent()
             )
             file(
                 ".env.staging",
                 """
-                    FOO=1000
+                FOO=1000
                 """.trimIndent()
             )
             directory("sub")
