@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased] - xxxx-xx-xx
 
 ### Added
+- Hierarchical dotenv definitions support [#19](https://github.com/uzzu/dotenv-gradle/issues/19)
+  - [See example](/examples/hierarchical_definitions)
 
 ### Changed
 - Update Gradle to 7.1.1 [#16](https://github.com/uzzu/dotenv-gradle/issues/16)
