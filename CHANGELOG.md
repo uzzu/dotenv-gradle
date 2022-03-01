@@ -18,10 +18,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   . [#20](https://github.com/uzzu/dotenv-gradle/issues/20)
   - [See migration guide](/examples/change_file/README.md#Migrate-from-1x)
 - Update Gradle to 7.1.1 [#16](https://github.com/uzzu/dotenv-gradle/issues/16)
-
-### Removed
-
-### Fixed
+- Update Kotlin to 1.4.31 used into Gradle 7.1.1
 
 ## [1.2.0] - 2021-09-24
 
