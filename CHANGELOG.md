@@ -8,13 +8,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased] - xxxx-xx-xx
 
 ### Added
+
 - Hierarchical dotenv definitions support [#19](https://github.com/uzzu/dotenv-gradle/issues/19)
   - [See example](/examples/hierarchical_definitions)
 
 ### Changed
-- Update Gradle to 7.1.1 [#16](https://github.com/uzzu/dotenv-gradle/issues/16)
 
-### Deprecated
+- Change `.env` filename feature use gradle property `dotenv.filename` , instead of environment variable `ENV_FILE`
+  . [#20](https://github.com/uzzu/dotenv-gradle/issues/20)
+  - [See migration guide](/examples/change_file/README.md#Migrate-from-1x)
+- Update Gradle to 7.1.1 [#16](https://github.com/uzzu/dotenv-gradle/issues/16)
 
 ### Removed
 
@@ -25,7 +28,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## Added
 
 - Changing `.env` file [#14](https://github.com/uzzu/dotenv-gradle/issues/14)
-    - If environment variable `ENV_FILE` is set, The plugin read a file specified `ENV_FILE` instead of `.env` file.
+  - If environment variable `ENV_FILE` is set, The plugin read a file specified `ENV_FILE` instead of `.env` file.
 
 ## Changed
 

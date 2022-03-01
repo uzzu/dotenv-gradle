@@ -26,7 +26,8 @@ class HierarchicalDotEnvDefinitionsTest {
                 """
                 plugins {
                     base
-                    id("co.uzzu.dotenv.gradle") }
+                    id("co.uzzu.dotenv.gradle")
+                }
                 println("[root] present FUGA: ${'$'}{env.isPresent("FUGA")}")
                 """.trimIndent()
             )
