@@ -1,7 +1,7 @@
 plugins {
     base
     id("co.uzzu.dotenv.gradle") version "1.2.0"
-    kotlin("jvm") version "1.4.20" apply false
+    kotlin("jvm") version "1.4.31" apply false
     id("org.jlleitschuh.gradle.ktlint") version "10.2.0"
 }
 

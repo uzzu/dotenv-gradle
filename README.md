@@ -9,8 +9,7 @@
 
 ### Setup
 
-Apply this plugin to root project.
-This plugin is not registered to Maven Central.
+Apply this plugin to root project. This plugin is not registered to Maven Central.
 [Read the Gradle Plugin Portal to setup plugin.](https://plugins.gradle.org/plugin/co.uzzu.dotenv.gradle)
 
 Don't need to apply this plugin to subprojects.
@@ -39,25 +38,36 @@ println(env.BAZ.orElse("default baz"))  // => baz
 
 **Don't commit `.env` file**
 
-### [Optional] Create a `.env.template` file for script completion
+### Create a `.env.template` file for script completion
 
-If a `.env.template` file exists, this plugin refer it to create a environemnt variable properties in the `env` extension.
+If a `.env.template` file exists, this plugin refer it to create a environemnt variable properties in the `env`
+extension.
 
-### [Optional] Change a file to read instead of `.env` file.
+### Change a file to read instead of `.env` file.
 
 If environment variable `ENV_FILE` is set, The plugin read a file specified `ENV_FILE` instead of `.env` file.
 
 [See example](/examples/change_file)
 
+### Hierarchical dotenv definitions
+
+Support subproject-only variables and extensions.
+
+[See example](/examples/hierarchical_definitions)
+
 ### Others
+
 - All APIs of `env` extension consider `.env` file.
-  - If the same variable name value is defined in both the `.env` file and the system environment variable, the system environment variable takes precedence.
+  - If the same variable name value is defined in both the `.env` file and the system environment variable, the system
+    environment variable takes precedence.
 - `(Boolean) env.isPresent(name: String)` : Indicates an environment variable with specified name is present.
 - `(String) env.fetch(name: String)` : Returns an environment variable.
-- `(String) env.fetch(name: String, defaultValue: String)` : Returns an environment variable, or specified default value if environment variable was not set.
-- `(String?) env.fetchOrNull(name: String)` : Returns an environment variable, or null if environment variable was not set.
+- `(String) env.fetch(name: String, defaultValue: String)` : Returns an environment variable, or specified default value
+  if environment variable was not set.
+- `(String?) env.fetchOrNull(name: String)` : Returns an environment variable, or null if environment variable was not
+  set.
 - `(Map<String, String) env.allVariables` : Returns all environment variables.
-- [See more examples](/examples/basic)
+- [See more examples](/examples)
 
 ## License
 

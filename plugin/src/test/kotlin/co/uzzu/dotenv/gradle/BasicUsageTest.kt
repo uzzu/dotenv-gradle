@@ -1,6 +1,5 @@
 package co.uzzu.dotenv.gradle
 
-import assertk.assertAll
 import assertk.assertThat
 import assertk.assertions.contains
 import assertk.assertions.isNotNull
@@ -12,15 +11,54 @@ import org.junit.jupiter.api.io.TempDir
 import java.io.File
 
 @Suppress("UnstableApiUsage") // GradleRunner#withPluginClasspath
-class ChangeDotEnvFileTest {
+class BasicUsageTest {
 
     @TempDir
     lateinit var projectDir: File
 
     @Test
-    fun changeFileByGradleProperties() {
+    fun applyToRootProject() {
         RootProject(projectDir) {
             settingsGradle()
+            buildGradle(
+                """
+                plugins {
+                    base
+                    id("co.uzzu.dotenv.gradle")
+                }
+                println("Result: ${'$'}{env.HOGE.value}")
+                """.trimIndent()
+            )
+            file(
+                ".env.template",
+                """
+                HOGE=
+                """.trimIndent()
+            )
+            file(
+                ".env",
+                """
+                HOGE=100
+                """.trimIndent()
+            )
+        }
+
+        val result = GradleRunner.create()
+            .withPluginClasspath()
+            .withProjectDir(projectDir)
+            .build()
+
+        assertThat(result.output).contains("Result: 100")
+    }
+
+    @Test
+    fun applyToSubProject() {
+        RootProject(projectDir) {
+            settingsGradle(
+                """
+                include("sub")
+                """.trimIndent()
+            )
             buildGradle(
                 """
                 plugins {
@@ -48,10 +86,11 @@ class ChangeDotEnvFileTest {
                 HOGE=200
                 """.trimIndent()
             )
+            directory("sub")
             file(
-                "gradle.properties",
+                "sub/build.gradle",
                 """
-                dotenv.filename=.env.staging
+                println("[Sub] Result: ${'$'}{env.HOGE.value}")
                 """.trimIndent()
             )
         }
@@ -61,38 +100,32 @@ class ChangeDotEnvFileTest {
             .withProjectDir(projectDir)
             .build()
 
-        assertThat(result.output).contains("Result: 200")
+        assertThat(result.output).contains("Result: 100")
+        assertThat(result.output).contains("[Sub] Result: 100")
     }
 
     @Test
-    fun throwsIfChangedFileNotFound() {
+    fun throwIfAppliedSubProject() {
         RootProject(projectDir) {
-            settingsGradle()
+            settingsGradle(
+                """
+                include("sub")
+                """.trimIndent()
+            )
             buildGradle(
                 """
                 plugins {
                     base
+                }
+                """.trimIndent()
+            )
+            directory("sub")
+            file(
+                "sub/build.gradle",
+                """
+                plugins {
                     id("co.uzzu.dotenv.gradle")
                 }
-                println("Result: ${'$'}{env.HOGE.value}")
-                """.trimIndent()
-            )
-            file(
-                ".env.template",
-                """
-                HOGE=
-                """.trimIndent()
-            )
-            file(
-                ".env",
-                """
-                HOGE=100
-                """.trimIndent()
-            )
-            file(
-                "gradle.properties",
-                """
-                dotenv.filename=.env.staging
                 """.trimIndent()
             )
         }
@@ -109,87 +142,6 @@ class ChangeDotEnvFileTest {
         }
         assertThat(error)
             .isNotNull()
-            .messageContains(
-                "Could not read the dotenv file specified in the gradle.properties. dotenv.filename: .env.staging"
-            )
-    }
-
-    @Test
-    fun changeFileOnlySubProject() {
-        RootProject(projectDir) {
-            settingsGradle(
-                """
-                include("sub")
-                """.trimIndent()
-            )
-            buildGradle(
-                """
-                plugins {
-                    base
-                    id("co.uzzu.dotenv.gradle")
-                }
-                println("[root] FOO: ${'$'}{env.FOO.value}")
-                """.trimIndent()
-            )
-            file(
-                ".env.template",
-                """
-                FOO=
-                """.trimIndent()
-            )
-            file(
-                ".env",
-                """
-                FOO=100
-                """.trimIndent()
-            )
-            file(
-                ".env.staging",
-                """
-                FOO=1000
-                """.trimIndent()
-            )
-            directory("sub")
-            file(
-                "sub/build.gradle",
-                """
-                println("[sub] BAR: ${'$'}{env.BAR.value}")
-                """.trimIndent()
-            )
-            file(
-                "sub/.env.template",
-                """
-                BAR=
-                """.trimIndent()
-            )
-            file(
-                "sub/.env",
-                """
-                BAR=200
-                """.trimIndent()
-            )
-            file(
-                "sub/.env.staging",
-                """
-                BAR=2000
-                """.trimIndent()
-            )
-            file(
-                "sub/gradle.properties",
-                """
-                dotenv.filename=.env.staging
-                """.trimIndent()
-            )
-        }
-
-        val result = GradleRunner.create()
-            .withPluginClasspath()
-            .withProjectDir(projectDir)
-            .build()
-
-        assertAll {
-            assertThat(result.output).contains("[root] FOO: 100")
-            assertThat(result.output).contains("[sub] BAR: 2000")
-        }
+            .messageContains("This plugin must be applied to root project.")
     }
 }
