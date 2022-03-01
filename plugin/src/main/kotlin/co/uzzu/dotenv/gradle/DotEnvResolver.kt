@@ -50,24 +50,32 @@ internal class DotEnvResolver(project: Project) {
     private fun Project.dotenvTemplate(filename: String = ".env.template"): Map<String, String> =
         readText(filename).let(DotEnvParser::parse)
 
-    private fun Project.dotenvSource(filename: String = ".env"): Map<String, String> {
-        val envFilename = System.getenv(KEY_ENV_FILE)
-            ?.takeIf {
-                val envFile = file(it)
-                if (!envFile.exists() || !envFile.canRead()) {
-                    throw IOException(
-                        buildString {
-                            append("Could not read the dotenv file specified in the environment variables.")
-                            append(" $KEY_ENV_FILE: $it,")
-                            append(" path: ${envFile.absolutePath}")
-                        }
-                    )
+    private fun Project.dotenvSource(): Map<String, String> {
+        val envFilename = dotenvFilename()
+            .let {
+                if (it != DEFAULT_FILENAME) {
+                    val envFile = file(it)
+                    if (!envFile.exists() || !envFile.canRead()) {
+                        throw IOException(
+                            buildString {
+                                append("Could not read the dotenv file specified in the gradle.properties.")
+                                append(" dotenv.filename: $it,")
+                                append(" path: ${envFile.absolutePath}")
+                            }
+                        )
+                    }
                 }
-                true
+                it
             }
-            ?: filename
         return readText(envFilename).let(DotEnvParser::parse)
     }
+
+    private fun Project.dotenvFilename(): String =
+        if (properties.containsKey(PROPERTY_FILENAME)) {
+            properties[PROPERTY_FILENAME] as String
+        } else {
+            DEFAULT_FILENAME
+        }
 
     private fun Project.readText(filename: String): String {
         val file = file(filename)
@@ -79,6 +87,7 @@ internal class DotEnvResolver(project: Project) {
     }
 
     companion object {
-        private const val KEY_ENV_FILE = "ENV_FILE"
+        private const val DEFAULT_FILENAME = ".env"
+        private const val PROPERTY_FILENAME = "dotenv.filename"
     }
 }
