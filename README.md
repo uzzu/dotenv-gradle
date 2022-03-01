@@ -49,6 +49,12 @@ If environment variable `ENV_FILE` is set, The plugin read a file specified `ENV
 
 [See example](/examples/change_file)
 
+### [Optional] Hierarchical dotenv definitions
+
+Support subproject-only variables and extensions.
+
+[See example](/examples/hierarchical_definitions)
+
 ### Others
 - All APIs of `env` extension consider `.env` file.
   - If the same variable name value is defined in both the `.env` file and the system environment variable, the system environment variable takes precedence.
