@@ -40,7 +40,12 @@ jobs:
         run: |
           cd examples/change_file
           ./gradlew clean --refresh-dependencies
-          ENV_FILE=.env.staging ./gradlew clean
+          echo 'dotenv.filename=.env.staging' > gradle.properties
+          ./gradlew clean
+      - name: Run hierarchical definitions example
+        run: |
+          cd examples/hierarchical_definitions
+          ./gradlew clean --refresh-dependencies
       - name: Upload build report
         uses: actions/upload-artifact@v1.0.0
         with:
