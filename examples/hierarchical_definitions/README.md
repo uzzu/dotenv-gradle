@@ -2,8 +2,9 @@
 
 version since: 2.0.0
 
-The plugin until version 1.x, refers only to `.env` file in root project directory, and could not create environement variable extension which only to use in subproject.
-So organization of environment variable names makes complicated for a bit. (e.g. Appends prefix to name.)
+The plugin until version 1.x, refers only to `.env` file in root project directory, and could not create environement
+variable extension which only to use in subproject. So organization of environment variable names makes complicated for
+a bit. (e.g. Appends prefix to name.)
 
 This feature reduces complexity of environment variable names.
 
@@ -25,10 +26,11 @@ This feature reduces complexity of environment variable names.
     └── src
 ```
 
-If an environment variable with the same name as the parent project is declared in a child project, the value specified in the child project takes precedence in the child project.
+If an environment variable with the same name as the parent project is declared in a child project, the value specified
+in the child project takes precedence in the child project.
 
-The hierarchy of this feature means not a directory structure, but a parent-child relationship of Projects.
-Supporting entire directory hierarchy is out of scope, as shown below.
+The hierarchy of this feature means not a directory structure, but a parent-child relationship of Projects. Supporting
+entire directory hierarchy is out of scope, as shown below.
 
 ```
 (Root).
@@ -53,6 +55,8 @@ Supporting entire directory hierarchy is out of scope, as shown below.
 
 Because in Gradle, the directory hierarchy only means default name of subproject. (so it can be changed)
 
-
 Run `./gradlew clean` and see console outputs.
-Edit `build.gradle.kts`, `sub1/build.gradle.kts`, `sub2/build.gradle.kts` or each `.env` file. Then run to see if how it works.
+
+Edit `build.gradle.kts`, `sub1/build.gradle.kts`, `sub2/build.gradle.kts` or each `.env` file.
+
+Then run to see if how it works.
