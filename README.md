@@ -1,6 +1,6 @@
 # Dotenv Gradle
 
-![master](https://github.com/uzzu/dotenv-gradle/workflows/master/badge.svg) [![ktlint](https://img.shields.io/badge/code%20style-%E2%9D%A4-FF4081.svg)](https://ktlint.github.io/)
+![main](https://github.com/uzzu/dotenv-gradle/workflows/main/badge.svg) [![ktlint](https://img.shields.io/badge/code%20style-%E2%9D%A4-FF4081.svg)](https://ktlint.github.io/)
 [![Gradle Plugin Portal](https://img.shields.io/maven-metadata/v/https/plugins.gradle.org/m2/co/uzzu/dotenv/gradle/co.uzzu.dotenv.gradle.gradle.plugin/maven-metadata.xml.svg?colorB=007ec6&label=gradlePluginPortal)](https://plugins.gradle.org/plugin/co.uzzu.dotenv.gradle)
 
 **Provides a ( `.env`, `.env.template` ) variables into Project extension.**
