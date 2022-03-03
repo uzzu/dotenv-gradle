@@ -34,6 +34,9 @@ tasks {
     }
     test {
         useJUnitPlatform()
+        if (env.GITHUB_EVENT_NAME.orNull() == "pull_request") {
+            ignoreFailures = true
+        }
     }
 }
 

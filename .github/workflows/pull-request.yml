@@ -13,12 +13,19 @@ jobs:
         with:
           distribution: 'adopt'
           java-version: 11
+      - name: Set env
+        run: |
+          echo 'PR_NUMBER=${{ github.event.number }}' >> $GITHUB_ENV
+          echo 'GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}' >> $GITHUB_ENV
       - name: Gradle clean
         run: |
           ./gradlew clean
       - name: Gradle build
         run: |
           ./gradlew build
+      - name: Comment to Pull Request
+        run: |
+          ./gradlew commentToPullRequest
       - name: Gradle publish to mavenLocal
         run: |
           ./gradlew publishToMavenLocal
