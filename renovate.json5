@@ -1,0 +1,20 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:base",
+    ":timezone(Asia/Tokyo)",
+  ],
+  "labels": ["renovate"],
+  "ignorePaths": [
+    "gradle/wrapper/gradle-wrapper.properties",
+  ],
+  "packageRules": [
+     {
+       "groupName": "kotlin",
+       "matchPackagePatterns": [
+          "^org\\.jetbrains\\.kotlin\\.jvm",
+       ],
+       "enabled": false,
+     },
+  ],
+}
