@@ -12,7 +12,7 @@ dependencies {
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.6.0")
     testRuntimeOnly("org.junit.vintage:junit-vintage-engine:5.6.0")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.6.0")
-    testImplementation("com.willowtreeapps.assertk:assertk-jvm:0.24")
+    testImplementation("com.willowtreeapps.assertk:assertk-jvm:0.25")
 }
 
 configure<JavaPluginConvention> {
