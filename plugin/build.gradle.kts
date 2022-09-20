@@ -8,10 +8,10 @@ plugins {
 dependencies {
     compileOnly(gradleApi())
     testImplementation(gradleTestKit())
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.0")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.0")
-    testRuntimeOnly("org.junit.vintage:junit-vintage-engine:5.9.0")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.9.0")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.1")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.1")
+    testRuntimeOnly("org.junit.vintage:junit-vintage-engine:5.9.1")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.9.1")
     testImplementation("com.willowtreeapps.assertk:assertk-jvm:0.25")
 }
 
