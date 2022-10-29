@@ -192,4 +192,89 @@ class ChangeDotEnvFileTest {
             assertThat(result.output).contains("[sub] BAR: 2000")
         }
     }
+
+    @Test
+    fun changeFileByUsingRelativePath() {
+        RootProject(projectDir) {
+            settingsGradle(
+                """
+                include("sub")
+                """.trimIndent()
+            )
+            buildGradle(
+                """
+                plugins {
+                    base
+                    id("co.uzzu.dotenv.gradle")
+                }
+                println("[root] FOO: ${'$'}{env.FOO.value}")
+                """.trimIndent()
+            )
+            file(
+                ".env.template",
+                """
+                FOO=
+                """.trimIndent()
+            )
+            file(
+                ".env",
+                """
+                FOO=100
+                """.trimIndent()
+            )
+            file(
+                "env/.env.staging",
+                """
+                FOO=1000
+                """.trimIndent()
+            )
+            file(
+                "gradle.properties",
+                """
+                dotenv.filename=./env/.env.staging
+                """.trimIndent()
+            )
+            directory("sub")
+            file(
+                "sub/build.gradle",
+                """
+                println("[sub] BAR: ${'$'}{env.BAR.value}")
+                """.trimIndent()
+            )
+            file(
+                "sub/.env.template",
+                """
+                BAR=
+                """.trimIndent()
+            )
+            file(
+                "sub/.env",
+                """
+                BAR=200
+                """.trimIndent()
+            )
+            file(
+                "sub/env/.env.staging",
+                """
+                BAR=2000
+                """.trimIndent()
+            )
+            file(
+                "sub/gradle.properties",
+                """
+                dotenv.filename=./env/.env.staging
+                """.trimIndent()
+            )
+        }
+
+        val result = GradleRunner.create()
+            .withPluginClasspath()
+            .withProjectDir(projectDir)
+            .build()
+
+        assertAll {
+            assertThat(result.output).contains("[root] FOO: 1000")
+            assertThat(result.output).contains("[sub] BAR: 2000")
+        }
+    }
 }
