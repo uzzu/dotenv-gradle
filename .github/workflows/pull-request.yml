@@ -13,22 +13,27 @@ jobs:
         with:
           distribution: 'adopt'
           java-version: 11
-      - name: Setup Ruby
-        uses: ruby/setup-ruby@v1
-      - name: Bundle install
+      - uses: reviewdog/action-setup@v1
+        with:
+          reviewdog_version: latest
+      - name: Set env
         run: |
-          bundle install
+          echo 'REVIEWDOG_GITHUB_API_TOKEN=${{ secrets.GITHUB_TOKEN }}' >> $GITHUB_ENV
       - name: Gradle clean
         run: |
           ./gradlew clean
       - name: Gradle build
         run: |
           ./gradlew build
-      - name: Run Danger
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Publish Test Report
+        uses: mikepenz/action-junit-report@v3
+        if: always()
+        with:
+          report_paths: '**/build/test-results/test/TEST-*.xml'
+      - name: Run reviewdog
+        if: always()
         run: |
-          bundle exec danger --verbose
+          find . -type f -name "ktlint*Check.xml" -exec sh -c "cat {} | reviewdog -f=checkstyle -name='ktlint' -reporter=github-pr-review" \;
       - name: Gradle publish to mavenLocal
         run: |
           ./gradlew publishToMavenLocal
