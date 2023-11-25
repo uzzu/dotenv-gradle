@@ -91,7 +91,10 @@ class ChangeDotEnvTemplateFileTest {
         assertThat(error)
             .isNotNull()
             .messageContains(
-                "Could not read the dotenv template file specified in the gradle.properties. dotenv.template.filename: .env.exampururu"
+                buildString {
+                    append("Could not read the dotenv template file specified in the gradle.properties.")
+                    append(" dotenv.template.filename: .env.exampururu")
+                }
             )
     }
 
