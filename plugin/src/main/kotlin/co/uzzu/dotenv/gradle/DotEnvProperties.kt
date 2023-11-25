@@ -12,6 +12,7 @@ open class DotEnvRoot(
     /**
      * @return All environment variables which are merged with variables specified in .env files.
      */
+    @Deprecated("Replace to use DotEnvRoot#allVariables()")
     val allVariables: Map<String, String>
         get() {
             val results = envProvider.getenv().toMutableMap()
@@ -55,6 +56,34 @@ open class DotEnvRoot(
     fun fetchOrNull(name: String): String? =
         envProvider.getenv()[name]
             ?: dotenvMap[name]
+
+    /**
+     * @return All environment variables which are merged with variables specified in .env files.
+     */
+    fun allVariables(): Map<String, String> {
+        val results = envProvider.getenv().toMutableMap()
+        dotenvMap.forEach { (key, value) ->
+            if (value != null && results[key] == null) {
+                results[key] = value
+            }
+        }
+        return results.toMap()
+    }
+
+    /**
+     * @return All environment variables which are merged with variables specified in .env files, and which includes null values.
+     * The Plugin set key if defined in .env template files, but it could not be retrieved as nullable value entries by using allVariables()
+     * By using allVariablesOrNull instead of allVariables, it is possible to retrieve all environment variables, including those that are only defined in the .env template (which means their values are null).
+     */
+    fun allVariablesOrNull(): Map<String, String?> {
+        val results = envProvider.getenvOrNull().toMutableMap()
+        dotenvMap.forEach { (key, value) ->
+            if (results[key] == null) {
+                results[key] = value
+            }
+        }
+        return results.toMap()
+    }
 }
 
 /**

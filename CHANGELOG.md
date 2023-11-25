@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Added
+
+- `(Map<String, String?>) env.allVariablesOrNull()` to get all environment variables includes variables specified in `.env` includes null variables.
+  - The Plugin set key if defined in .env template files, but it could not be retrieved as nullable value entries by using allVariables()
+  - By using allVariablesOrNull instead of allVariables, it is possible to retrieve all environment variables, including those that are only defined in the .env template (which means their values are null).
+
+### Deprecated
+
+- `val (Map<String, String>) env.allVariables`
+  - Replace to use a method `(Map<String, String>) env.allVariables()` instead.
+
 ## [2.0.0] - 2022-03-02
 
 ### Added

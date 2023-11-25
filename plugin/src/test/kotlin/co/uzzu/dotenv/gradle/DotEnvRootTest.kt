@@ -111,7 +111,7 @@ class DotEnvRootTest {
                 "QUUX" to null
             )
         )
-        val allVariables = root.allVariables
+        val allVariables = root.allVariables()
         assertAll(
             { assertEquals("env", allVariables["FOO"]) },
             { assertEquals("env", allVariables["BAR"]) },
@@ -119,6 +119,37 @@ class DotEnvRootTest {
             { assertEquals("dotenv", allVariables["QUX"]) },
             { assertEquals(null, allVariables["QUUX"]) },
             { assertEquals(null, allVariables["CORGE"]) }
+        )
+    }
+
+    @Test
+    fun allVariablesOrNull() {
+        val envProvider = InMemoryEnvProvider(
+            mapOf(
+                "FOO" to "env",
+                "BAR" to "env",
+                "CORGE" to null,
+            )
+        )
+        val root = DotEnvRoot(
+            envProvider,
+            mapOf(
+                "BAR" to "dotenv",
+                "BAZ" to "dotenv",
+                "QUX" to "dotenv",
+                "QUUX" to null,
+            )
+        )
+        val allVariables = root.allVariablesOrNull()
+        assertAll(
+            { assertEquals("env", allVariables["FOO"]) },
+            { assertEquals("env", allVariables["BAR"]) },
+            { assertEquals("dotenv", allVariables["BAZ"]) },
+            { assertEquals("dotenv", allVariables["QUX"]) },
+            { assertEquals(null, allVariables["QUUX"]) },
+            { assertTrue(allVariables.containsKey("QUUX")) },
+            { assertEquals(null, allVariables["CORGE"]) },
+            { assertTrue(allVariables.containsKey("CORGE")) },
         )
     }
 }
