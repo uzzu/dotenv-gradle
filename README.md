@@ -66,7 +66,8 @@ Support subproject-only variables and extensions.
   if environment variable was not set.
 - `(String?) env.fetchOrNull(name: String)` : Returns an environment variable, or null if environment variable was not
   set.
-- `(Map<String, String) env.allVariables` : Returns all environment variables.
+- `(Map<String, String) env.allVariables()` : Returns all environment variables.
+- `(Map<String, String?) env.allVariablesOrNull()` : Returns all environment variables includes null values.
 - [See more examples](/examples)
 
 ## License
