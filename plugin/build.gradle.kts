@@ -42,7 +42,7 @@ tasks {
 object Artifact {
     val groupId = "co.uzzu.dotenv"
     val artifactId = "gradle"
-    val version = "2.0.0"
+    val version = "2.1.0"
 }
 
 group = Artifact.groupId
