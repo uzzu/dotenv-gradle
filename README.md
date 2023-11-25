@@ -49,6 +49,10 @@ If environment variable `ENV_FILE` is set, The plugin read a file specified `ENV
 
 [See example](/examples/change_file)
 
+### Change a template filename to read instead of `.env.template` file.
+
+[See example](/examples/change_template_file)
+
 ### Hierarchical dotenv definitions
 
 Support subproject-only variables and extensions.

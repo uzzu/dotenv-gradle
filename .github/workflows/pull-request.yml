@@ -47,6 +47,10 @@ jobs:
           ./gradlew clean --refresh-dependencies
           echo 'dotenv.filename=.env.staging' > gradle.properties
           ./gradlew clean
+      - name: Run change template file example
+        run: |
+          cd examples/change_template_file
+          ./gradlew clean --refresh-dependencies
       - name: Run hierarchical definitions example
         run: |
           cd examples/hierarchical_definitions
