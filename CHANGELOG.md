@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `(Map<String, String?>) env.allVariablesOrNull()` to get all environment variables includes variables specified in `.env` includes null variables.
   - The Plugin set key if defined in .env template files, but it could not be retrieved as nullable value entries by using allVariables()
   - By using allVariablesOrNull instead of allVariables, it is possible to retrieve all environment variables, including those that are only defined in the .env template (which means their values are null).
+- Change `.env.template` filename feature use gradle property `dotenv.template.filename`
+  - Almost cases are work fine, but has similler problem with [#39](https://github.com/uzzu/dotenv-gradle/issues/39)
 
 ### Deprecated
 

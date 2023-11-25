@@ -47,8 +47,25 @@ internal class DotEnvResolver(project: Project) {
         return checkNotNull(dotenvCache[project])
     }
 
-    private fun Project.dotenvTemplate(filename: String = ".env.template"): Map<String, String> =
-        readText(filename).let(DotEnvParser::parse)
+    private fun Project.dotenvTemplate(): Map<String, String> {
+        val filename = dotenvTemplateFilename()
+            .let {
+                if (it != DEFAULT_TEMPLATE_FILENAME) {
+                    val templateFile = file(it)
+                    if (!templateFile.exists() || !templateFile.canRead()) {
+                        throw IOException(
+                            buildString {
+                                append("Could not read the dotenv template file specified in the gradle.properties.")
+                                append(" $PROPERTY_TEMPLATE_FILENAME: $it,")
+                                append(" path: ${templateFile.absolutePath}")
+                            }
+                        )
+                    }
+                }
+                it
+            }
+        return readText(filename).let(DotEnvParser::parse)
+    }
 
     private fun Project.dotenvSource(): Map<String, String> {
         val envFilename = dotenvFilename()
@@ -59,7 +76,7 @@ internal class DotEnvResolver(project: Project) {
                         throw IOException(
                             buildString {
                                 append("Could not read the dotenv file specified in the gradle.properties.")
-                                append(" dotenv.filename: $it,")
+                                append(" $PROPERTY_FILENAME: $it,")
                                 append(" path: ${envFile.absolutePath}")
                             }
                         )
@@ -77,6 +94,13 @@ internal class DotEnvResolver(project: Project) {
             DEFAULT_FILENAME
         }
 
+    private fun Project.dotenvTemplateFilename(): String =
+        if (properties.containsKey(PROPERTY_TEMPLATE_FILENAME)) {
+            properties[PROPERTY_TEMPLATE_FILENAME] as String
+        } else {
+            DEFAULT_TEMPLATE_FILENAME
+        }
+
     private fun Project.readText(filename: String): String {
         val file = file(filename)
         return if (file.exists()) {
@@ -88,6 +112,8 @@ internal class DotEnvResolver(project: Project) {
 
     companion object {
         private const val DEFAULT_FILENAME = ".env"
+        private const val DEFAULT_TEMPLATE_FILENAME = ".env.template"
         private const val PROPERTY_FILENAME = "dotenv.filename"
+        private const val PROPERTY_TEMPLATE_FILENAME = "dotenv.template.filename"
     }
 }
