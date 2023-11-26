@@ -192,4 +192,208 @@ class ChangeDotEnvFileTest {
             assertThat(result.output).contains("[sub] BAR: 2000")
         }
     }
+
+    @Test
+    fun changeFileWithIgnoringParent() {
+        RootProject(projectDir) {
+            settingsGradle(
+                """
+                include("sub")
+                """.trimIndent()
+            )
+            buildGradle(
+                """
+                plugins {
+                    base
+                    id("co.uzzu.dotenv.gradle")
+                }
+                println("[root] FOO: ${'$'}{env.FOO.value}")
+                """.trimIndent()
+            )
+            file(
+                ".env.template",
+                """
+                FOO=
+                """.trimIndent()
+            )
+            file(
+                "env/.env.staging",
+                """
+                FOO=1000
+                """.trimIndent()
+            )
+            file(
+                "gradle.properties",
+                """
+                dotenv.filename=./env/.env.staging
+                """.trimIndent()
+            )
+            directory("sub")
+            file(
+                "sub/build.gradle",
+                """
+                println("[sub] BAR: ${'$'}{env.BAR.value}")
+                """.trimIndent()
+            )
+            file(
+                "sub/.env.template",
+                """
+                BAR=
+                """.trimIndent()
+            )
+            file(
+                "sub/.env",
+                """
+                BAR=200
+                """.trimIndent()
+            )
+        }
+
+        val result = GradleRunner.create()
+            .withPluginClasspath()
+            .withProjectDir(projectDir)
+            .build()
+
+        assertAll {
+            assertThat(result.output).contains("[root] FOO: 1000")
+            assertThat(result.output).contains("[sub] BAR: 200")
+        }
+    }
+
+    @Test
+    fun changeFileWithIgnoringParentByUsingCliOption() {
+        RootProject(projectDir) {
+            settingsGradle(
+                """
+                include("sub")
+                """.trimIndent()
+            )
+            buildGradle(
+                """
+                plugins {
+                    base
+                    id("co.uzzu.dotenv.gradle")
+                }
+                println("[root] FOO: ${'$'}{env.FOO.value}")
+                """.trimIndent()
+            )
+            file(
+                ".env.template",
+                """
+                FOO=
+                """.trimIndent()
+            )
+            file(
+                ".env",
+                """
+                FOO=100
+                """.trimIndent()
+            )
+            file(
+                ".env.local",
+                """
+                FOO=1000
+                """.trimIndent()
+            )
+            directory("sub")
+            file(
+                "sub/build.gradle",
+                """
+                println("[sub] BAR: ${'$'}{env.BAR.value}")
+                """.trimIndent()
+            )
+            file(
+                "sub/.env.template",
+                """
+                BAR=
+                """.trimIndent()
+            )
+            file(
+                "sub/.env",
+                """
+                BAR=200
+                """.trimIndent()
+            )
+        }
+
+        val result = GradleRunner.create()
+            .withPluginClasspath()
+            .withProjectDir(projectDir)
+            .withArguments("-Pdotenv.filename=.env.local")
+            .build()
+
+        assertAll {
+            assertThat(result.output).contains("[root] FOO: 1000")
+            assertThat(result.output).contains("[sub] BAR: 200")
+        }
+    }
+
+    @Test
+    fun changeFileWithoutIgnoringParent() {
+        RootProject(projectDir) {
+            settingsGradle(
+                """
+                include("sub")
+                """.trimIndent()
+            )
+            buildGradle(
+                """
+                plugins {
+                    base
+                    id("co.uzzu.dotenv.gradle")
+                }
+                println("[root] FOO: ${'$'}{env.FOO.value}")
+                """.trimIndent()
+            )
+            file(
+                ".env.template",
+                """
+                FOO=
+                """.trimIndent()
+            )
+            file(
+                "env/.env.staging",
+                """
+                FOO=1000
+                """.trimIndent()
+            )
+            file(
+                "gradle.properties",
+                """
+                dotenv.filename.ignore.parent=false
+                dotenv.filename=./env/.env.staging
+                """.trimIndent()
+            )
+            directory("sub")
+            file(
+                "sub/build.gradle",
+                """
+                println("[sub] BAR: ${'$'}{env.BAR.value}")
+                """.trimIndent()
+            )
+            file(
+                "sub/.env.template",
+                """
+                BAR=
+                """.trimIndent()
+            )
+            directory("sub/env")
+            file(
+                "sub/env/.env.staging",
+                """
+                BAR=2000
+                """.trimIndent()
+            )
+        }
+
+        val result = GradleRunner.create()
+            .withPluginClasspath()
+            .withProjectDir(projectDir)
+            .build()
+
+        assertAll {
+            assertThat(result.output).contains("[root] FOO: 1000")
+            assertThat(result.output).contains("[sub] BAR: 2000")
+        }
+    }
 }

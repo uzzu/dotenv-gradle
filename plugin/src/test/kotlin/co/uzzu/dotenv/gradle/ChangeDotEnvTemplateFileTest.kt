@@ -166,4 +166,115 @@ class ChangeDotEnvTemplateFileTest {
             assertThat(result.output).contains("[sub] BAZ: 200")
         }
     }
+
+    @Test
+    fun changeFileWithIgnoreParent() {
+        RootProject(projectDir) {
+            settingsGradle(
+                """
+                include("sub")
+                """.trimIndent()
+            )
+            buildGradle(
+                """
+                plugins {
+                    base
+                    id("co.uzzu.dotenv.gradle")
+                }
+                println("[root] FOO: ${'$'}{env.FOO.orNull()}")
+                """.trimIndent()
+            )
+            file(
+                ".env.example",
+                """
+                FOO=
+                """.trimIndent()
+            )
+            file(
+                "gradle.properties",
+                """
+                dotenv.template.filename=.env.example
+                """.trimIndent()
+            )
+            directory("sub")
+            file(
+                "sub/build.gradle",
+                """
+                println("[sub] BAR: ${'$'}{env.BAR.orNull()}")
+                """.trimIndent()
+            )
+            file(
+                "sub/.env.template",
+                """
+                BAR=
+                """.trimIndent()
+            )
+        }
+
+        val result = GradleRunner.create()
+            .withPluginClasspath()
+            .withProjectDir(projectDir)
+            .build()
+
+        assertAll {
+            assertThat(result.output).contains("[root] FOO: null")
+            assertThat(result.output).contains("[sub] BAR: null")
+        }
+    }
+
+    @Test
+    fun changeFileWithoutIgnoringParent() {
+        RootProject(projectDir) {
+            settingsGradle(
+                """
+                include("sub")
+                """.trimIndent()
+            )
+            buildGradle(
+                """
+                plugins {
+                    base
+                    id("co.uzzu.dotenv.gradle")
+                }
+                println("[root] FOO: ${'$'}{env.FOO.orNull()}")
+                """.trimIndent()
+            )
+            file(
+                ".env.example",
+                """
+                FOO=
+                """.trimIndent()
+            )
+            file(
+                "gradle.properties",
+                """
+                dotenv.template.filename.ignore.parent=false
+                dotenv.template.filename=.env.example
+                """.trimIndent()
+            )
+            directory("sub")
+            file(
+                "sub/build.gradle",
+                """
+                println("[sub] BAR: ${'$'}{env.BAR.orNull()}")
+                """.trimIndent()
+            )
+            file(
+                "sub/.env.example",
+                """
+                BAR=
+                """.trimIndent()
+            )
+        }
+
+        val result = GradleRunner.create()
+            .withPluginClasspath()
+            .withProjectDir(projectDir)
+            .build()
+
+        assertAll {
+            assertThat(result.output).contains("[root] FOO: null")
+            assertThat(result.output).contains("[sub] BAR: null")
+        }
+    }
 }
