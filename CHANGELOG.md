@@ -10,16 +10,26 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
-- The behavior of project to ignore the filename option specified for this plugin in the parent project's gradle properties by default.
-  - For example, if `dotenv.filename=.env.staging` is set in the root project, this setting will automatically apply to sub-projects as well. While this follows the correct resolution order of Gradle Properties, it has been a source of confusion for users working with dotenv.
-  - To disable this default behavior, add `dotenv.filename.ignore.parent=false` to the gradle.properties in the root project.
-  - A same update has been applied to the specification of template file names. To disable this default behavior, add `dotenv.template.filename.ignore.parent=false` to the gradle.properties in the root project.
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [3.0.0] - 2023-11-27
+
+### Changed
+- The behavior of project to ignore the filename option specified for this plugin in the parent project's gradle properties by default.
+  - Fix of [#39](https://github.com/uzzu/dotenv-gradle/issues/39)
+  - For example, if `dotenv.filename=.env.staging` is set in the root project, this setting will automatically apply to sub-projects as well. While this follows the correct resolution order of Gradle Properties, it has been a source of confusion for users working with dotenv.
+  - To disable this default behavior, add `dotenv.filename.ignore.parent=false` to the gradle.properties in the root project.
+  - A same update has been applied to the specification of template file names. To disable this default behavior, add `dotenv.template.filename.ignore.parent=false` to the gradle.properties in the root project.
+
+### Deprecated
+
+- `val (Map<String, String>) env.allVariables`
+  - Replace to use a method `(Map<String, String>) env.allVariables()` instead.
 
 ## [2.1.0] - 2023-11-26
 
@@ -30,7 +40,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - The Plugin set key if defined in .env template files, but it could not be retrieved as nullable value entries by
     using allVariables()
   - By using allVariablesOrNull instead of allVariables, it is possible to retrieve all environment variables, including
-    those that are only defined in the .env template (which means their values are null).
+    those that are only defined in the .env template (which means their values are possible to null).
 - Change `.env.template` filename feature use gradle property `dotenv.template.filename`
   - Almost cases are work fine, but has similler problem with [#39](https://github.com/uzzu/dotenv-gradle/issues/39)
 
