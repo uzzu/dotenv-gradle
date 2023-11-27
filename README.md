@@ -43,15 +43,13 @@ println(env.BAZ.orElse("default baz"))  // => baz
 If a `.env.template` file exists, this plugin refer it to create a environemnt variable properties in the `env`
 extension.
 
-### Change a file to read instead of `.env` file.
-
-If environment variable `ENV_FILE` is set, The plugin read a file specified `ENV_FILE` instead of `.env` file.
-
-[See example](/examples/change_file)
-
-### Change a template filename to read instead of `.env.template` file.
+#### If you needed, change a template filename to read instead of `.env.template` file.
 
 [See example](/examples/change_template_file)
+
+### Change a file to read instead of `.env` file.
+
+[See example](/examples/change_file)
 
 ### Hierarchical dotenv definitions
 
