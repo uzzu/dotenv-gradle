@@ -8,8 +8,10 @@ import assertk.assertions.messageContains
 import org.gradle.testkit.runner.GradleRunner
 import org.gradle.testkit.runner.UnexpectedBuildFailure
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.fail
 import org.junit.jupiter.api.io.TempDir
 import java.io.File
+import java.io.StringWriter
 
 @Suppress("UnstableApiUsage") // GradleRunner#withPluginClasspath
 class ChangeDotEnvFileTest {
@@ -319,12 +321,114 @@ class ChangeDotEnvFileTest {
         val result = GradleRunner.create()
             .withPluginClasspath()
             .withProjectDir(projectDir)
-            .withArguments("-Pdotenv.filename=.env.local")
+            .withArguments("-Pdotenv.filename=.env.local", "--debug")
             .build()
 
+        println(result.output)
         assertAll {
             assertThat(result.output).contains("[root] FOO: 1000")
             assertThat(result.output).contains("[sub] BAR: 200")
+        }
+    }
+
+    @Test
+    fun changeFileWithIgnoringParentByUsingCliOptionWithCallSubProject() {
+        RootProject(projectDir) {
+            settingsGradle(
+                """
+                include("sub")
+                include("sub:sub")
+                """.trimIndent()
+            )
+            buildGradle(
+                """
+                plugins {
+                    id("base")
+                    id("co.uzzu.dotenv.gradle")
+                }
+                println("[root] FOO: ${'$'}{env.FOO.value}")
+                """.trimIndent()
+            )
+            file(
+                "gradle.properties",
+                """
+                dotenv.experimental.preferred.cli.args=true
+                """.trimIndent()
+            )
+            file(
+                ".env.template",
+                """
+                FOO=
+                """.trimIndent()
+            )
+            file(
+                ".env",
+                """
+                FOO=100
+                """.trimIndent()
+            )
+            directory("sub")
+            file(
+                "sub/build.gradle",
+                """
+                plugins {
+                    id("base")
+                }
+                println("[sub] BAR: ${'$'}{env.BAR.value}")
+                """.trimIndent()
+            )
+            file(
+                "sub/.env.template",
+                """
+                BAR=
+                """.trimIndent()
+            )
+            file(
+                "sub/.env",
+                """
+                BAR=200
+                """.trimIndent()
+            )
+            file(
+                "sub/.env.local",
+                """
+                BAR=2000
+                """.trimIndent()
+            )
+            directory("sub/sub")
+            file(
+                "sub/sub/build.gradle",
+                """
+                plugins {
+                    id("base")
+                }
+                println("[sub/sub] BAR: ${'$'}{env.BAR.value}")
+                """.trimIndent()
+            )
+            file(
+                "sub/sub/.env.template",
+                """
+                BAR=
+                """.trimIndent()
+            )
+            file(
+                "sub/sub/.env",
+                """
+                BAR=20000
+                """.trimIndent()
+            )
+        }
+
+        val result = GradleRunner.create()
+            .withPluginClasspath()
+            .withProjectDir(projectDir)
+            .withArguments("sub:clean", "-Pdotenv.filename=.env.local")
+            .build()
+
+        assertAll {
+            assertThat(result.output).contains("[root] FOO: 100")
+            assertThat(result.output).contains("[sub] BAR: 2000")
+            assertThat(result.output).contains("[sub/sub] BAR: 20000")
         }
     }
 

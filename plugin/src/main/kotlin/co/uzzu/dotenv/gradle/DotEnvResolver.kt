@@ -1,17 +1,23 @@
 package co.uzzu.dotenv.gradle
 
 import co.uzzu.dotenv.DotEnvParser
+import org.gradle.StartParameter
 import org.gradle.api.Project
 import java.io.IOException
 import java.nio.charset.Charset
 
-internal class DotEnvResolver(project: Project) {
+internal class DotEnvResolver(
+    project: Project,
+    startParameter: StartParameter,
+) {
 
     private val rootProject: Project
+    private val startParameter: StartParameter
     private val dotenvCache: MutableMap<Project, Map<String, String?>> = mutableMapOf()
 
     init {
         rootProject = project.rootProject
+        this.startParameter = startParameter
     }
 
     fun resolve(project: Project): Map<String, String?> {
@@ -36,7 +42,7 @@ internal class DotEnvResolver(project: Project) {
 
     private fun Project.dotenv(): Map<String, String?> {
         require(this@dotenv.rootProject == this@DotEnvResolver.rootProject)
-        val config = ConfigurationResolver(this).resolve()
+        val config = ConfigurationResolver(this, startParameter).resolve()
         if (dotenvCache[this] == null) {
             val dotenvTemplate = dotenvTemplate(config)
             val dotenvSource = dotenvSource(config)

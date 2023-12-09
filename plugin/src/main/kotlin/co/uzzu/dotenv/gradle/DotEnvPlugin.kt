@@ -12,7 +12,7 @@ class DotEnvPlugin : Plugin<Project> {
         check(target == target.rootProject) { "This plugin must be applied to root project." }
 
         val envProvider = SystemEnvProvider()
-        val resolver = DotEnvResolver(target)
+        val resolver = DotEnvResolver(target, target.gradle.startParameter)
         val rootVariables = resolver.resolve(target)
 
         target.applyEnv(envProvider, rootVariables)
