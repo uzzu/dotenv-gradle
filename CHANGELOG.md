@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+- Use Gradle 8.5
+- Use Kotlin 1.9.21
 
 ### Deprecated
 

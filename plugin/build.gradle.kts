@@ -1,8 +1,8 @@
 plugins {
-    id("com.gradle.plugin-publish") version "0.11.0"
     `java-gradle-plugin`
     `maven-publish`
     kotlin("jvm")
+    id("com.gradle.plugin-publish")
 }
 
 dependencies {
@@ -15,14 +15,15 @@ dependencies {
     testImplementation("com.willowtreeapps.assertk:assertk-jvm:0.25")
 }
 
-configure<JavaPluginConvention> {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
-
-    sourceSets {
-        getByName("main").java.srcDirs("src/main/kotlin")
-        getByName("test").java.srcDirs("src/test/kotlin")
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(8))
     }
+}
+
+sourceSets {
+    getByName("main").java.srcDirs("src/main/kotlin")
+    getByName("test").java.srcDirs("src/test/kotlin")
 }
 
 tasks {
@@ -48,35 +49,6 @@ object Artifact {
 group = Artifact.groupId
 version = Artifact.version
 
-gradlePlugin {
-    plugins {
-        register("dotenv") {
-            id = "co.uzzu.dotenv.gradle"
-            implementationClass = "co.uzzu.dotenv.gradle.DotEnvPlugin"
-        }
-    }
-}
-
-pluginBundle {
-    website = "https://github.com/uzzu/dotenv-gradle"
-    vcsUrl = "https://github.com/uzzu/dotenv-gradle.git"
-    description = "A converting plugin from dotenv(.env.template, .env) files to Gradle project extension"
-    tags = listOf("dotenv")
-
-    (plugins) {
-        "dotenv" {
-            displayName = "Gradle dotenv plugin"
-            version = Artifact.version
-        }
-    }
-
-    mavenCoordinates {
-        groupId = Artifact.groupId
-        artifactId = Artifact.artifactId
-        version = Artifact.version
-    }
-}
-
 publishing {
     publishing {
         repositories {
@@ -85,6 +57,22 @@ publishing {
 
         publications.create("pluginMaven", MavenPublication::class) {
             artifactId = Artifact.artifactId
+        }
+    }
+}
+
+@Suppress("UnstableApiUsage")
+gradlePlugin {
+    website = "https://github.com/uzzu/dotenv-gradle"
+    vcsUrl = "https://github.com/uzzu/dotenv-gradle.git"
+
+    plugins {
+        create("dotenv") {
+            id = "co.uzzu.dotenv.gradle"
+            implementationClass = "co.uzzu.dotenv.gradle.DotEnvPlugin"
+            displayName = "Gradle dotenv plugin"
+            description = "A converting plugin from dotenv(.env.template, .env) files to Gradle project extension"
+            tags = listOf("dotenv")
         }
     }
 }
