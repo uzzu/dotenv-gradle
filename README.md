@@ -72,6 +72,11 @@ Support subproject-only variables and extensions.
 - `(Map<String, String?) env.allVariablesOrNull()` : Returns all environment variables includes null values.
 - [See more examples](/examples)
 
+
+## Restrictions
+
+This plugin does not support specifying properties with the -P option of CLI arguments, and there are no plans to support it in the future. See [#67](https://github.com/uzzu/dotenv-gradle/issues/67)
+
 ## License
 
 [Apache License 2.0](/LICENSE.txt)
