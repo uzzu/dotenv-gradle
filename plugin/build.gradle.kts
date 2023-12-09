@@ -1,23 +1,24 @@
 plugins {
     `java-gradle-plugin`
     `maven-publish`
-    kotlin("jvm")
-    id("com.gradle.plugin-publish")
+    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.gradle.plugin.publish)
 }
 
 dependencies {
     compileOnly(gradleApi())
     testImplementation(gradleTestKit())
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.1")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.10.1")
-    testRuntimeOnly("org.junit.vintage:junit-vintage-engine:5.10.1")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.10.1")
-    testImplementation("com.willowtreeapps.assertk:assertk-jvm:0.25")
+    testImplementation(platform(libs.junit.bom))
+    testImplementation(libs.junit.jupiter.api)
+    testRuntimeOnly(libs.junit.jupiter.engine)
+    testRuntimeOnly(libs.junit.vintage.engine)
+    testRuntimeOnly(libs.junit.platform.launcher)
+    testImplementation(libs.assertk)
 }
 
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(8))
+        languageVersion.set(JavaLanguageVersion.of(libs.versions.java.toolchain.get().toInt()))
     }
 }
 
@@ -28,10 +29,10 @@ sourceSets {
 
 tasks {
     compileKotlin {
-        kotlinOptions.jvmTarget = "1.8"
+        kotlinOptions.jvmTarget = JavaVersion.toVersion(libs.versions.java.toolchain.get()).toString()
     }
     compileTestKotlin {
-        kotlinOptions.jvmTarget = "1.8"
+        kotlinOptions.jvmTarget = JavaVersion.toVersion(libs.versions.java.toolchain.get()).toString()
     }
     test {
         useJUnitPlatform()

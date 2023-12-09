@@ -1,15 +1,9 @@
 plugins {
     base
-    id("co.uzzu.dotenv.gradle") version "3.0.0"
-    kotlin("jvm") version "1.9.21" apply false
-    id("com.gradle.plugin-publish") version "1.2.1" apply false
-    id("org.jlleitschuh.gradle.ktlint") version "11.0.0"
-}
-
-allprojects {
-    repositories {
-        mavenCentral()
-    }
+    alias(libs.plugins.dotenv.gradle)
+    alias(libs.plugins.kotlin.jvm) apply false
+    alias(libs.plugins.gradle.plugin.publish) apply false
+    alias(libs.plugins.ktlint.gradle)
 }
 
 ktlint {
