@@ -1,28 +1,25 @@
 plugins {
     base
     alias(libs.plugins.dotenv.gradle)
+    alias(libs.plugins.detekt)
     alias(libs.plugins.kotlin.jvm) apply false
     alias(libs.plugins.gradle.plugin.publish) apply false
-    alias(libs.plugins.ktlint.gradle)
 }
 
-ktlint {
-    verbose.set(true)
-    outputToConsole.set(true)
-    reporters {
-        reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.CHECKSTYLE)
-    }
-    ignoreFailures.set(true)
-}
+sharedDetektConfiguration()
 
 subprojects {
-    apply(plugin = "org.jlleitschuh.gradle.ktlint")
-    ktlint {
-        verbose.set(true)
-        outputToConsole.set(true)
-        reporters {
-            reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.CHECKSTYLE)
-        }
-        ignoreFailures.set(true)
+    apply(plugin = "io.gitlab.arturbosch.detekt")
+    sharedDetektConfiguration()
+}
+
+fun Project.sharedDetektConfiguration() {
+    detekt {
+        config.setFrom(rootProject.file("./gradle/detekt.yml"))
+        buildUponDefaultConfig = true
+        ignoreFailures = false
+        debug = false
+        basePath = rootDir.absolutePath
+        parallel = true
     }
 }

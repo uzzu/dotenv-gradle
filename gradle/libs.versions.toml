@@ -4,7 +4,7 @@ java-toolchain = "8"
 dotenv-gradle = "3.0.0"
 kotlin = "1.9.21"
 gradle-plugin-publish = "1.2.1"
-ktlint-gradle = "11.0.0"
+detekt = "1.23.4"
 
 junit-bom = "5.10.1"
 assertk = "0.25"
@@ -13,7 +13,7 @@ assertk = "0.25"
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 dotenv-gradle = { id = "co.uzzu.dotenv.gradle", version.ref = "dotenv-gradle" }
 gradle-plugin-publish = { id = "com.gradle.plugin-publish", version.ref = "gradle-plugin-publish" }
-ktlint-gradle = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint-gradle" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 
 [libraries]
 junit-bom = { module = "org.junit:junit-bom", version.ref = "junit-bom" }
