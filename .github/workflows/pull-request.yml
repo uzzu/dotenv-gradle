@@ -33,7 +33,7 @@ jobs:
       - name: Run reviewdog
         if: always()
         run: |
-          find . -type f -name "ktlint*Check.xml" -exec sh -c "cat {} | reviewdog -f=checkstyle -name='ktlint' -reporter=github-pr-review" \;
+          cat build/reports/detekt/detekt-merged-report.sarif | reviewdog -f=sarif -name="detekt" -reporter="github-check" -level="error" -filter-mode="nofilter" -fail-on-error
       - name: Gradle publish to mavenLocal
         run: |
           ./gradlew publishToMavenLocal

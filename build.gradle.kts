@@ -14,18 +14,25 @@ plugins {
     alias(libs.plugins.gradle.plugin.publish) apply false
 }
 
-detektConfigurationRoot()
+val reportMerge by tasks.registering(ReportMergeTask::class) {
+    output.set(rootProject.layout.buildDirectory.file("reports/detekt/detekt-merged-report.sarif"))
+}
+
+detektConfigurationRoot(reportMerge)
 
 subprojects {
     apply(plugin = "io.gitlab.arturbosch.detekt")
-    detektConfigurationShared()
+    detektConfigurationShared(reportMergeTask = reportMerge)
 }
 
 // region detekt configuration
 
-fun Project.detektConfigurationRoot() {
+fun Project.detektConfigurationRoot(
+    reportMergeTask: TaskProvider<ReportMergeTask>,
+) {
     val allKtsFiles = allKtsFiles()
     detektConfigurationShared(
+        reportMergeTask = reportMergeTask,
         source = allKtsFiles
             + allBuildSrcKtFiles()
             + files("src"),
@@ -33,6 +40,7 @@ fun Project.detektConfigurationRoot() {
 }
 
 fun Project.detektConfigurationShared(
+    reportMergeTask: TaskProvider<ReportMergeTask>,
     source: List<Any> = listOf(files("src")),
     detektConfig: File = rootProject.file("./gradle/detekt.yml"),
 ) {
@@ -45,17 +53,13 @@ fun Project.detektConfigurationShared(
         parallel = true
     }
 
-    val reportMerge by tasks.registering(ReportMergeTask::class) {
-        output.set(rootProject.layout.buildDirectory.file("reports/detekt/merge.xml"))
-    }
-
     tasks.withType<Detekt>().configureEach {
         finalizedBy(reportMerge)
-        reports.xml.required = true
+        reports.sarif.required = true
     }
 
-    reportMerge {
-        input.from(tasks.withType<Detekt>().map { it.xmlReportFile })
+    reportMergeTask {
+        input.from(tasks.withType<Detekt>().map { it.sarifReportFile })
     }
 }
 
