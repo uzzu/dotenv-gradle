@@ -10,21 +10,6 @@ open class DotEnvRoot(
     private val dotenvMap: Map<String, String?>
 ) {
     /**
-     * @return All environment variables which are merged with variables specified in .env files.
-     */
-    @Deprecated("Replace to use DotEnvRoot#allVariables()")
-    val allVariables: Map<String, String>
-        get() {
-            val results = envProvider.getenv().toMutableMap()
-            dotenvMap.forEach { (key, value) ->
-                if (value != null && results[key] == null) {
-                    results[key] = value
-                }
-            }
-            return results.toMap()
-        }
-
-    /**
      * @return Indicates an environment variable with specified name is present
      */
     fun isPresent(name: String): Boolean =
