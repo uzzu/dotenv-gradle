@@ -44,7 +44,7 @@ tasks {
 object Artifact {
     const val GroupId = "co.uzzu.dotenv"
     const val ArtifactId = "gradle"
-    const val Version = "3.0.0"
+    const val Version = "4.0.0"
 }
 
 group = Artifact.GroupId

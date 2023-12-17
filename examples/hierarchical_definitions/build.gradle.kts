@@ -1,6 +1,6 @@
 plugins {
     base
-    id("co.uzzu.dotenv.gradle") version "3.0.0"
+    id("co.uzzu.dotenv.gradle") version "4.0.0"
 }
 
 println("[$name] FOO: ${env.FOO.value}")
