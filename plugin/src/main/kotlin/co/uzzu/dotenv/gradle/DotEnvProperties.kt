@@ -39,7 +39,7 @@ open class DotEnvRoot(
     fun fetch(name: String) =
         envProvider.getenv()[name]
             ?: dotenvMap[name]
-            ?: throw IllegalStateException("""Environment variable $name was not set.""")
+            ?: error("""Environment variable $name was not set.""")
 
     /**
      * @return An environment variable
@@ -112,7 +112,7 @@ open class DotEnvProperty(
         get() =
             envProvider.getenv()[name]
                 ?: dotenvValue
-                ?: throw IllegalStateException("""Environment variable $name was not set.""")
+                ?: error("""Environment variable $name was not set.""")
 
     /**
      * @return An environment variable. If it was not set, returns specified default value

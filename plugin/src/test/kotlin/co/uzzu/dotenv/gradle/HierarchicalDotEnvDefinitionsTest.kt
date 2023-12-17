@@ -88,7 +88,7 @@ class HierarchicalDotEnvDefinitionsTest {
             file(
                 ".env",
                 """
-                    HOGE=100
+                HOGE=100
                 """.trimIndent()
             )
             directory("sub")

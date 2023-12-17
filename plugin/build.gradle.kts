@@ -42,13 +42,13 @@ tasks {
 // region publishing
 
 object Artifact {
-    val groupId = "co.uzzu.dotenv"
-    val artifactId = "gradle"
-    val version = "3.0.0"
+    const val GroupId = "co.uzzu.dotenv"
+    const val ArtifactId = "gradle"
+    const val Version = "3.0.0"
 }
 
-group = Artifact.groupId
-version = Artifact.version
+group = Artifact.GroupId
+version = Artifact.Version
 
 publishing {
     publishing {
@@ -57,7 +57,7 @@ publishing {
         }
 
         publications.create("pluginMaven", MavenPublication::class) {
-            artifactId = Artifact.artifactId
+            artifactId = Artifact.ArtifactId
         }
     }
 }
