@@ -7,7 +7,7 @@ gradle-plugin-publish = "1.2.1"
 detekt = "1.23.4"
 
 junit-bom = "5.10.1"
-assertk = "0.25"
+assertk = "0.28.0"
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
