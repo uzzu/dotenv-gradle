@@ -1,36 +1,38 @@
 plugins {
-    id("com.gradle.plugin-publish") version "0.11.0"
     `java-gradle-plugin`
     `maven-publish`
-    kotlin("jvm")
+    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.gradle.plugin.publish)
 }
 
 dependencies {
     compileOnly(gradleApi())
     testImplementation(gradleTestKit())
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.1")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.10.1")
-    testRuntimeOnly("org.junit.vintage:junit-vintage-engine:5.10.1")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.10.1")
-    testImplementation("com.willowtreeapps.assertk:assertk-jvm:0.25")
+    testImplementation(platform(libs.junit.bom))
+    testImplementation(libs.junit.jupiter.api)
+    testRuntimeOnly(libs.junit.jupiter.engine)
+    testRuntimeOnly(libs.junit.vintage.engine)
+    testRuntimeOnly(libs.junit.platform.launcher)
+    testImplementation(libs.assertk)
 }
 
-configure<JavaPluginConvention> {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
-
-    sourceSets {
-        getByName("main").java.srcDirs("src/main/kotlin")
-        getByName("test").java.srcDirs("src/test/kotlin")
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(libs.versions.java.toolchain.get().toInt()))
     }
+}
+
+sourceSets {
+    getByName("main").java.srcDirs("src/main/kotlin")
+    getByName("test").java.srcDirs("src/test/kotlin")
 }
 
 tasks {
     compileKotlin {
-        kotlinOptions.jvmTarget = "1.8"
+        kotlinOptions.jvmTarget = JavaVersion.toVersion(libs.versions.java.toolchain.get()).toString()
     }
     compileTestKotlin {
-        kotlinOptions.jvmTarget = "1.8"
+        kotlinOptions.jvmTarget = JavaVersion.toVersion(libs.versions.java.toolchain.get()).toString()
     }
     test {
         useJUnitPlatform()
@@ -40,42 +42,13 @@ tasks {
 // region publishing
 
 object Artifact {
-    val groupId = "co.uzzu.dotenv"
-    val artifactId = "gradle"
-    val version = "3.0.0"
+    const val GroupId = "co.uzzu.dotenv"
+    const val ArtifactId = "gradle"
+    const val Version = "4.0.0"
 }
 
-group = Artifact.groupId
-version = Artifact.version
-
-gradlePlugin {
-    plugins {
-        register("dotenv") {
-            id = "co.uzzu.dotenv.gradle"
-            implementationClass = "co.uzzu.dotenv.gradle.DotEnvPlugin"
-        }
-    }
-}
-
-pluginBundle {
-    website = "https://github.com/uzzu/dotenv-gradle"
-    vcsUrl = "https://github.com/uzzu/dotenv-gradle.git"
-    description = "A converting plugin from dotenv(.env.template, .env) files to Gradle project extension"
-    tags = listOf("dotenv")
-
-    (plugins) {
-        "dotenv" {
-            displayName = "Gradle dotenv plugin"
-            version = Artifact.version
-        }
-    }
-
-    mavenCoordinates {
-        groupId = Artifact.groupId
-        artifactId = Artifact.artifactId
-        version = Artifact.version
-    }
-}
+group = Artifact.GroupId
+version = Artifact.Version
 
 publishing {
     publishing {
@@ -84,7 +57,23 @@ publishing {
         }
 
         publications.create("pluginMaven", MavenPublication::class) {
-            artifactId = Artifact.artifactId
+            artifactId = Artifact.ArtifactId
+        }
+    }
+}
+
+@Suppress("UnstableApiUsage")
+gradlePlugin {
+    website = "https://github.com/uzzu/dotenv-gradle"
+    vcsUrl = "https://github.com/uzzu/dotenv-gradle.git"
+
+    plugins {
+        create("dotenv") {
+            id = "co.uzzu.dotenv.gradle"
+            implementationClass = "co.uzzu.dotenv.gradle.DotEnvPlugin"
+            displayName = "Gradle dotenv plugin"
+            description = "A converting plugin from dotenv(.env.template, .env) files to Gradle project extension"
+            tags = listOf("dotenv")
         }
     }
 }

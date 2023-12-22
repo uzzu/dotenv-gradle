@@ -1,7 +1,7 @@
 package co.uzzu.dotenv
 
 object DotEnvParser {
-    private const val newLine = "\n"
+    private const val NewLine = "\n"
     private val newLinesRegex = Regex("""\\n""", option = RegexOption.MULTILINE)
     private val keyValRegex = Regex("""^\s*([\w.-]+)\s*=\s*(.*)?\s*$""")
     private val newLinesMatches = Regex("""\n|\r|\r\n""")
@@ -23,7 +23,7 @@ object DotEnvParser {
                 val trimmedValue = if (isDoubleQuoted || isSingleQuoted) {
                     val dequoted = rawValue.substring(1, rawValue.lastIndex)
                     if (isDoubleQuoted) {
-                        dequoted.replace(newLinesRegex, newLine)
+                        dequoted.replace(newLinesRegex, NewLine)
                     } else {
                         dequoted
                     }

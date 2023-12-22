@@ -17,14 +17,32 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [4.0.0] - 2023-12-22
+
+### Changed
+
+- Use Gradle 8.5
+- Use Kotlin 1.9.21
+
+### Removed
+
+- `val (Map<String, String>) env.allVariables`
+  - Replace to use a method `(Map<String, String>) env.allVariables()` instead.
+
 ## [3.0.0] - 2023-11-27
 
 ### Changed
-- The behavior of project to ignore the filename option specified for this plugin in the parent project's gradle properties by default.
+
+- The behavior of project to ignore the filename option specified for this plugin in the parent project's gradle
+  properties by default.
   - Fix of [#39](https://github.com/uzzu/dotenv-gradle/issues/39)
-  - For example, if `dotenv.filename=.env.staging` is set in the root project, this setting will automatically apply to sub-projects as well. While this follows the correct resolution order of Gradle Properties, it has been a source of confusion for users working with dotenv.
-  - To disable this default behavior, add `dotenv.filename.ignore.parent=false` to the gradle.properties in the root project.
-  - A same update has been applied to the feature of changing `.env.template` filename. To disable this default behavior, add `dotenv.template.filename.ignore.parent=false` to the gradle.properties in the root project.
+  - For example, if `dotenv.filename=.env.staging` is set in the root project, this setting will automatically apply to
+    sub-projects as well. While this follows the correct resolution order of Gradle Properties, it has been a source of
+    confusion for users working with dotenv.
+  - To disable this default behavior, add `dotenv.filename.ignore.parent=false` to the gradle.properties in the root
+    project.
+  - A same update has been applied to the feature of changing `.env.template` filename. To disable this default
+    behavior, add `dotenv.template.filename.ignore.parent=false` to the gradle.properties in the root project.
 
 ### Deprecated
 

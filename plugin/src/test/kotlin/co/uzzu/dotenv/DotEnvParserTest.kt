@@ -9,8 +9,8 @@ class DotEnvParserTest {
     @Test
     fun testBasicParse() {
         val text = """
-            HOGE_API_KEY="dummy_key"
-            HOGE_API_SECRET="dummy_secret"
+        HOGE_API_KEY="dummy_key"
+        HOGE_API_SECRET="dummy_secret"
         """.trimIndent()
 
         val actual = DotEnvParser.parse(text)
@@ -23,8 +23,8 @@ class DotEnvParserTest {
     @Test
     fun emptyValue() {
         val text = """
-            HOGE_API_KEY=
-            HOGE_API_SECRET=
+        HOGE_API_KEY=
+        HOGE_API_SECRET=
         """.trimIndent()
 
         val actual = DotEnvParser.parse(text)
@@ -37,8 +37,8 @@ class DotEnvParserTest {
     @Test
     fun quotedValue() {
         val text = """
-            HOGE_API_KEY="dummy_key"
-            HOGE_API_SECRET='dummy_secret'
+        HOGE_API_KEY="dummy_key"
+        HOGE_API_SECRET='dummy_secret'
         """.trimIndent()
 
         val actual = DotEnvParser.parse(text)
@@ -51,8 +51,8 @@ class DotEnvParserTest {
     @Test
     fun incompleteQuoteValue() {
         val text = """
-            HOGE_API_KEY="dummy_key
-            HOGE_API_SECRET=dummy_secret'
+        HOGE_API_KEY="dummy_key
+        HOGE_API_SECRET=dummy_secret'
         """.trimIndent()
 
         val actual = DotEnvParser.parse(text)
@@ -65,8 +65,8 @@ class DotEnvParserTest {
     @Test
     fun singleCharQuoteValue() {
         val text = """
-            HOGE_API_KEY="
-            HOGE_API_SECRET='
+        HOGE_API_KEY="
+        HOGE_API_SECRET='
         """.trimIndent()
 
         val actual = DotEnvParser.parse(text)
