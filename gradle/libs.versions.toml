@@ -1,7 +1,7 @@
 [versions]
 java-toolchain = "8"
 
-dotenv-gradle = "3.0.0"
+dotenv-gradle = "4.0.0"
 kotlin = "1.9.21"
 gradle-plugin-publish = "1.2.1"
 detekt = "1.23.4"
