@@ -1,3 +1,13 @@
+---
+name: Feature Request
+about: Create a feature request to help us improve
+title: ''
+labels: ''
+assignees: 'uzzu'
+
+---
+
+
 **Is your feature request related to a problem? Please describe.**
 <!-- A clear and concise description of what the problem is. Ex. I'm always frustrated when [...] --?
 
