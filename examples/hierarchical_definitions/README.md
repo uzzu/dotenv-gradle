@@ -1,12 +1,8 @@
-## Hierarchical dotenv definitions example
+## Example: Hierarchical dotenv definitions
 
-version since: 2.0.0
+This works for version ≥ 2.0.0.
 
-The plugin until version 1.x, refers only to `.env` file in root project directory, and could not create environement
-variable extension which only to use in subproject. So organization of environment variable names makes complicated for
-a bit. (e.g. Appends prefix to name.)
-
-This feature reduces complexity of environment variable names.
+You can define environment variables in a hierarchical project. This feature reduces complexity for environment variable names in such project structures.
 
 ```
 (Root).
@@ -53,10 +49,14 @@ entire directory hierarchy is out of scope, as shown below.
         └── src
 ```
 
-Because in Gradle, the directory hierarchy only means default name of subproject. (so it can be changed)
+The reason is that in Gradle, the directory hierarchy only means default name of subproject (so it can be changed).
 
 Run `./gradlew clean` and see console outputs.
 
 Edit `build.gradle.kts`, `sub1/build.gradle.kts`, `sub2/build.gradle.kts` or each `.env` file.
 
 Then run to see if how it works.
+
+## Old Versions
+
+Note that the plugin until version 1.x referred only to an `.env` file in the root project directory, and could not create environement variable extensions which are only used in subproject.
