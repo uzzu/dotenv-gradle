@@ -1,19 +1,21 @@
-## Change file example
+## Example: Change the `.env` filename
 
-version since: 2.0.0
+This works with versions ≥ 2.0.0.
+
+This example shows you how to use a different name for the `.env` file. In this example, the `.env.staging` file can be used as the alternative env file. The default filename `.env` is overriden in `gradle.properties`, but commented out.
 
 Run the following command to confirm that the DotEnv file to be loaded has changed.
 
 - `./gradlew clean`
 - Edit `gradle.properties`, and `./gradlew clean`
 
-### Migrate from 1.x
+### Migrating from 1.x
 
-Change file feature by using environment variable `ENV_FILE` is removed in 2.0.0.
+In earlier versions of this plugin, the filename could be changed with the `ENV_FILE` environment variable. This is no longer possible as of version 2.0.0.
 
 Please use `dotenv.filename` in gradle.properties instead of `ENV_FILE`.
 
-----
+---
 
 ### Old spec
 
