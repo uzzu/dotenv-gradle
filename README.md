@@ -55,9 +55,9 @@ println(env.BAZ.orElse("default baz"))  // => baz
 
 ### Templates
 
-If a `.env.template` file exists, this plugin populates environment variables from it, too. This means you can use the template to define the environment variables that are required for your project, and optionally override them in the `.env` file.
+If a `.env.template` file exists, this plugin populates environment variables names from the template, too. This means you can use the template to define the environment variables that are required for your project, and override them in the `.env` file. Values within the `.env.template` file are *not* populated when read, all values will be `null`.
 
-[See the example](/examples/change_template_file) for more details.
+[See the `change_template_file` example](/examples/change_template_file) for more details.
 
 ### Changing the name of the `.env` file
 
