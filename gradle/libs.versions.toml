@@ -4,7 +4,7 @@ java-toolchain = "8"
 dotenv-gradle = "4.0.0"
 kotlin = "1.9.21"
 gradle-plugin-publish = "1.2.1"
-detekt = "1.23.6"
+detekt = "1.23.7"
 
 junit-bom = "5.11.0"
 assertk = "0.28.1"
