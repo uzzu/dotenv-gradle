@@ -7,39 +7,47 @@ import java.util.Properties
 internal interface Configuration {
     val filename: String
     val templateFilename: String
+    val resourcesPattern: String
 }
 
 internal interface RootConfiguration : Configuration {
     val ignoreParentFilename: Boolean
     val ignoreParentTemplateFilename: Boolean
+    val ignoreParentResourcesPattern: Boolean
 }
 
 @Suppress("ConstPropertyName")
 object ConfigurationKey {
     const val Filename: String = RootConfigurationKey.Filename
     const val TemplateFilename: String = RootConfigurationKey.TemplateFilename
+    const val ResourcesPattern: String = RootConfigurationKey.ResourcesPattern
 }
 
 @Suppress("ConstPropertyName")
 object RootConfigurationKey {
     const val IgnoreParentFilename: String = "dotenv.filename.ignore.parent"
     const val IgnoreParentTemplateFilename: String = "dotenv.template.filename.ignore.parent"
+    const val IgnoreParentResourcesPattern: String = "dotenv.resources.pattern.ignore.parent"
 
     const val Filename: String = "dotenv.filename"
     const val TemplateFilename: String = "dotenv.template.filename"
+    const val ResourcesPattern: String = "dotenv.resources.pattern"
 }
 
 internal object DefaultConfiguration : Configuration {
     override val filename: String = DefaultRootConfiguration.filename
     override val templateFilename: String = DefaultRootConfiguration.templateFilename
+    override val resourcesPattern: String = DefaultRootConfiguration.resourcesPattern
 }
 
 internal object DefaultRootConfiguration : RootConfiguration {
     override val ignoreParentFilename: Boolean = true
     override val ignoreParentTemplateFilename: Boolean = true
+    override val ignoreParentResourcesPattern: Boolean = true
 
     override val filename: String = ".env"
     override val templateFilename: String = ".env.template"
+    override val resourcesPattern: String = "**/*"
 }
 
 internal class ConfigurationResolver(
@@ -69,6 +77,13 @@ internal class ConfigurationResolver(
                     DefaultRootConfiguration.templateFilename,
                     rootConfiguration.ignoreParentTemplateFilename,
                 ),
+                resourcesPattern = resolveStringFor(
+                    project,
+                    gradlePropertiesFromFile,
+                    ConfigurationKey.ResourcesPattern,
+                    DefaultRootConfiguration.resourcesPattern,
+                    rootConfiguration.ignoreParentResourcesPattern,
+                ),
             )
         }
     }
@@ -96,6 +111,10 @@ internal class ConfigurationResolver(
                     RootConfigurationKey.IgnoreParentTemplateFilename,
                     DefaultRootConfiguration.ignoreParentTemplateFilename,
                 ),
+                ignoreParentResourcesPattern = it.boolProperty(
+                    RootConfigurationKey.IgnoreParentResourcesPattern,
+                    DefaultRootConfiguration.ignoreParentResourcesPattern,
+                ),
                 filename = it.stringProperty(
                     RootConfigurationKey.Filename,
                     DefaultRootConfiguration.filename,
@@ -103,6 +122,10 @@ internal class ConfigurationResolver(
                 templateFilename = it.stringProperty(
                     RootConfigurationKey.TemplateFilename,
                     DefaultRootConfiguration.templateFilename,
+                ),
+                resourcesPattern = it.stringProperty(
+                    RootConfigurationKey.ResourcesPattern,
+                    DefaultRootConfiguration.resourcesPattern,
                 ),
             )
         }
@@ -155,11 +178,14 @@ internal class ConfigurationResolver(
 private data class ConfigurationImpl(
     override val filename: String,
     override val templateFilename: String,
+    override val resourcesPattern: String,
 ) : Configuration
 
 private data class RootConfigurationImpl(
     override val ignoreParentFilename: Boolean,
     override val ignoreParentTemplateFilename: Boolean,
+    override val ignoreParentResourcesPattern: Boolean,
     override val filename: String,
     override val templateFilename: String,
+    override val resourcesPattern: String,
 ) : RootConfiguration

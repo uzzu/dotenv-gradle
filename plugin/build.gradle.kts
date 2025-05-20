@@ -42,9 +42,9 @@ tasks {
 // region publishing
 
 object Artifact {
-    const val GroupId = "co.uzzu.dotenv"
+    const val GroupId = "io.github.s41u.dotenv"
     const val ArtifactId = "gradle"
-    const val Version = "4.0.0"
+    const val Version = "4.0.0-with-resources"
 }
 
 group = Artifact.GroupId
@@ -62,17 +62,16 @@ publishing {
     }
 }
 
-@Suppress("UnstableApiUsage")
 gradlePlugin {
-    website = "https://github.com/uzzu/dotenv-gradle"
-    vcsUrl = "https://github.com/uzzu/dotenv-gradle.git"
+    website = "https://github.com/s41u/dotenv-gradle"
+    vcsUrl = "https://github.com/s41u/dotenv-gradle.git"
 
     plugins {
         create("dotenv") {
-            id = "co.uzzu.dotenv.gradle"
+            id = "${Artifact.GroupId}.${Artifact.ArtifactId}"
             implementationClass = "co.uzzu.dotenv.gradle.DotEnvPlugin"
-            displayName = "Gradle dotenv plugin"
-            description = "A converting plugin from dotenv(.env.template, .env) files to Gradle project extension"
+            displayName = "Dotenv Gradle Plugin with Resources"
+            description = "Forked version with resources processing feature"
             tags = listOf("dotenv")
         }
     }

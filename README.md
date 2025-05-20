@@ -1,86 +1,43 @@
-# Dotenv Gradle
+# Dotenv Gradle with Resources
 
-![main](https://github.com/uzzu/dotenv-gradle/workflows/main/badge.svg) [![ktlint](https://img.shields.io/badge/code%20style-%E2%9D%A4-FF4081.svg)](https://ktlint.github.io/)
-[![Gradle Plugin Portal](https://img.shields.io/maven-metadata/v/https/plugins.gradle.org/m2/co/uzzu/dotenv/gradle/co.uzzu.dotenv.gradle.gradle.plugin/maven-metadata.xml.svg?colorB=007ec6&label=gradlePluginPortal)](https://plugins.gradle.org/plugin/co.uzzu.dotenv.gradle)
+### Forked from [uzzu/dotenv-gradle](https://github.com/uzzu/dotenv-gradle)
 
-**Provides dotenv (`.env`) and dotenv templates (`.env.template`) as variables in a Project extension.**
+A Gradle plugin fork that extends the original Dotenv Gradle plugin by adding support for processing resource files during the `processResources` phase.
 
-## How to use
 
-### Setup
+## Example Usage
 
-Apply this plugin to the root project. [Read the Gradle Plugin Portal to setup the plugin.](https://plugins.gradle.org/plugin/co.uzzu.dotenv.gradle).
+### 1. Example `.env` file
 
-Note that this plugin is not registered to Maven Central.
-
-You do not need to apply this plugin to subprojects; the values are applied automatically.
-
-### Create `.env` in the root directory of your gradle project
-
-For example:
-
-```dosini
-FOO=foo
-BAR="bar"
-BAZ='baz'
-
-# You can comment out lines with a #
-; You can comment out lines with a ;
+```dotenv
+FOO=hello
+BAR=world
+BAZ=123
 ```
 
-Then, you will be able to use the environment variables in your gradle scripts:
+### 2. Resource file **before** processing (`src/main/resources/config.yml`)
 
-```Kotlin
-println(env.FOO.isPresent)              // => true
-println(env.FOO.value)                  // => foo
-println(env.BAR.orNull())               // => bar
-println(env.BAZ.orElse("default baz"))  // => baz
+```yaml
+message: "${FOO}, ${BAR}! Your code is ${BAZ}"
 ```
 
-**Don't commit the `.env` file.** Ideally, add it to your `.gitignore` file.
+### 3. Resource file **after** processing (`build/resources/main/config.yml`)
 
-### API
+```yaml
+message: "hello, world! Your code is 123"
+```
+---
+## Config
 
-- `(Boolean) env.isPresent(name: String)`: Indicates that an environment variable with specified name is present.
+You can adjust path to your env file and which files are processed by setting a pattern in your `gradle.properties`: 
 
-- `(String) env.fetch(name: String)`: Returns the environment variable of the given name.
+```properties
+dotenv.filename=.env
+dotenv.resources.pattern=**/*
+```
 
-- `(String) env.fetch(name: String, defaultValue: String)`: Returns an environment variable, or specified default value if environment variable was not set.
 
-- `(String?) env.fetchOrNull(name: String)`: Returns an environment variable, or `null` if the environment variable was not set.
+---
 
-- `(Map<String, String) env.allVariables()`: Returns all environment variables.
-
-- `(Map<String, String?) env.allVariablesOrNull()`: Returns all environment variables, and includes `null` values for unset variables.
-
-### Templates
-
-If a `.env.template` file exists, this plugin populates environment variables names from the template, too. This means you can use the template to define the environment variables that are required for your project, and override them in the `.env` file. Values within the `.env.template` file are *not* populated when read, all values will be `null`.
-
-[See the `change_template_file` example](/examples/change_template_file) for more details.
-
-### Changing the name of the `.env` file
-
-You can also use a different name for the `.env` file. [See this example](/examples/change_file) on how to do this.
-
-### Hierarchical dotenv definitions
-
-This project supports subproject-only variables and extensions.
-
-[See this example](/examples/hierarchical_definitions) for more details.
-
-### Other Features/Functions
-
-Note that all APIs of this `env` extension consider the `.env` file.
-
-If the same variable name value is defined in both the `.env` file and system environment variables, the system environment variable takes precedence.
-
-[See more examples](/examples).
-
-## Restrictions
-
-This plugin does not support specifying properties with the `-P` option of CLI arguments, and there are no plans to support it in the future. See [#67](https://github.com/uzzu/dotenv-gradle/issues/67)
-
-## License
-
-[Apache License 2.0](/LICENSE.txt)
+For more information, configuration options, and advanced usage, please refer to the original project:
+ [uzzu/dotenv-gradle](https://github.com/uzzu/dotenv-gradle)

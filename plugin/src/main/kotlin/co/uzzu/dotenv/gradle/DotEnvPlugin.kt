@@ -4,7 +4,10 @@ import co.uzzu.dotenv.EnvProvider
 import co.uzzu.dotenv.SystemEnvProvider
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.file.DuplicatesStrategy
 import org.gradle.api.plugins.ExtensionAware
+import org.gradle.api.plugins.JavaPlugin
+import org.gradle.language.jvm.tasks.ProcessResources
 
 @Suppress("unused")
 class DotEnvPlugin : Plugin<Project> {
@@ -28,6 +31,20 @@ class DotEnvPlugin : Plugin<Project> {
         ) as ExtensionAware
         dotenvProperties.forEach { (name, value) ->
             env.extensions.create(name, DotEnvProperty::class.java, envProvider, name, value)
+        }
+
+        applyEnvToResources(dotenvProperties)
+    }
+
+    private fun Project.applyEnvToResources(dotenvProperties: Map<String, String?>) {
+        plugins.withType(JavaPlugin::class.java) {
+            val pr = project.tasks.findByName("processResources")
+            if (pr is ProcessResources) {
+                pr.duplicatesStrategy = DuplicatesStrategy.INCLUDE
+                val configuration = ConfigurationResolver(this).resolve()
+                pr.inputs.properties(dotenvProperties)
+                pr.filesMatching(configuration.resourcesPattern) { details -> details.expand(dotenvProperties) }
+            }
         }
     }
 }
