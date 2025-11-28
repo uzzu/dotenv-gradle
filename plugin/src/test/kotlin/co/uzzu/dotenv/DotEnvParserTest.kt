@@ -21,6 +21,23 @@ class DotEnvParserTest {
     }
 
     @Test
+    fun testBasicSubstitutions() {
+        val text = """
+        HOGE_API_KEY="dummy_key"
+        HOGE_API_SECRET="dummy_secret"
+        BASIC_AUTH="Basic: ${'$'}{HOGE_API_KEY}:${'$'}{HOGE_API_SECRET}"
+        """.trimIndent()
+
+        val actual = DotEnvParser.parse(text)
+        val substituted = DotEnvParser.substitute(actual)
+        assertAll(
+            { assertEquals(substituted["HOGE_API_KEY"], "dummy_key") },
+            { assertEquals(substituted["HOGE_API_SECRET"], "dummy_secret") },
+            { assertEquals(substituted["BASIC_AUTH"], "Basic: dummy_key:dummy_secret") }
+        )
+    }
+
+    @Test
     fun emptyValue() {
         val text = """
         HOGE_API_KEY=

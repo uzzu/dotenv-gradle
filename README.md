@@ -69,6 +69,10 @@ This project supports subproject-only variables and extensions.
 
 [See this example](/examples/hierarchical_definitions) for more details.
 
+### Substitutions
+
+You can use substitutions in your `.env` file. [See this example](/examples/substitutions) for more details.
+
 ### Other Features/Functions
 
 Note that all APIs of this `env` extension consider the `.env` file.
