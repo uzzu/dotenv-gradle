@@ -5,6 +5,7 @@ object DotEnvParser {
     private val newLinesRegex = Regex("""\\n""", option = RegexOption.MULTILINE)
     private val keyValRegex = Regex("""^\s*([\w.-]+)\s*=\s*(.*)?\s*$""")
     private val newLinesMatches = Regex("""\n|\r|\r\n""")
+    private val keyPlaceholderMatcher = Regex("""\$\{([\w.-]+)}""") // search for ${KEY} pattern
 
     fun parse(text: String): Map<String, String> =
         text
@@ -33,4 +34,25 @@ object DotEnvParser {
                 rawKey to trimmedValue
             }
             .toMap()
+
+    fun substitute(mapped: Map<String, String>): Map<String, String> =
+        mapped
+            .asSequence()
+            .map { (key, value) ->
+                key to substitutePlaceholders(value, mapped)
+            }
+            .toMap()
+
+    private fun substitutePlaceholders(value: String, mapped: Map<String, String>): String {
+        var result = value
+        val regex = Regex("""\$\{([\w.-]+)}""")
+        var matchResult = keyPlaceholderMatcher.find(result)
+        while (matchResult != null) {
+            val placeholder = matchResult.groupValues[1]
+            val replacement = mapped[placeholder] ?: ""
+            result = result.replace(matchResult.value, replacement)
+            matchResult = regex.find(result)
+        }
+        return result
+    }
 }

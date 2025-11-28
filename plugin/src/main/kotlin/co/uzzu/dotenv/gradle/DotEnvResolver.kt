@@ -65,7 +65,8 @@ internal class DotEnvResolver(project: Project) {
                 }
                 it
             }
-        return readText(filename).let(DotEnvParser::parse)
+        val parsedDotenv = readText(filename).let(DotEnvParser::parse)
+        return DotEnvParser.substitute(parsedDotenv)
     }
 
     private fun Project.dotenvSource(config: Configuration): Map<String, String> {
@@ -85,7 +86,9 @@ internal class DotEnvResolver(project: Project) {
                 }
                 it
             }
-        return readText(envFilename).let(DotEnvParser::parse)
+
+        val parsedDotenv = readText(envFilename).let(DotEnvParser::parse)
+        return DotEnvParser.substitute(parsedDotenv)
     }
 
     private fun Project.readText(filename: String): String {
