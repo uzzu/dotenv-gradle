@@ -11,7 +11,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: 'adopt'
-          java-version: 11
+          java-version: 11.0.32+101
       - name: Set env
         run: |
           echo 'GRADLE_PUBLISH_KEY=${{ secrets.GRADLE_PUBLISH_KEY }}' >> $GITHUB_ENV
