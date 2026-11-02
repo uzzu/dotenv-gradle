@@ -12,7 +12,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: 'adopt'
-          java-version: 11
+          java-version: 25
       - uses: reviewdog/action-setup@v1
         with:
           reviewdog_version: latest
